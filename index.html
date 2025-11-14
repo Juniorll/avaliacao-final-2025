@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avaliação Interativa - Filosofia Lean</title>
+    
+    <!-- Carrega o Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Configuração do Tailwind (para usar a fonte Inter) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    
+    <!-- Estilos CSS personalizados -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-user-select: none; /* Safari */
+            -ms-user-select: none; /* IE 10+ */
+            user-select: none; /* Padrão */
+        }
+        
+        /* Estilo para a alternativa selecionada */
+        .alternativa-selecionada {
+            background-color: #D1E5F1; /* Azul claro */
+            border-color: #007BFF; /* Azul mais escuro */
+            font-weight: 600;
+        }
+
+        /* Oculta os spinners de input[type=number] */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none; 
+          margin: 0; 
+        }
+        input[type=number] {
+          -moz-appearance: textfield; /* Firefox */
+        }
+
+        /* Animação de fade-in */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 flex items-center justify-center min-h-screen p-4">
+
+    <!-- Container Principal -->
+    <div class="bg-white w-full max-w-3xl rounded-lg shadow-2xl overflow-hidden">
+
+        <!-- ===== 1. TELA DE INÍCIO ===== -->
+        <div id="inicio-container" class="p-8 md:p-12 fade-in">
+            <h1 class="text-3xl font-bold text-blue-800 mb-4">Avaliação sobre Filosofia Lean</h1>
+            <p class="text-gray-600 mb-8">Por favor, preencha seus dados para iniciar a avaliação. A prova é composta por 20 questões de múltipla escolha.</p>
+            
+            <form id="form-inicio" class="space-y-6">
+                <div>
+                    <label for="nome" class="block text-sm font-medium text-gray-700">Nome Completo</label>
+                    <input type="text" id="nome" name="nome" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                
+                <div>
+                    <label for="colegio" class="block text-sm font-medium text-gray-700">Colégio / Instituição</label>
+                    <input type="text" id="colegio" name="colegio" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                
+                <div>
+                    <!-- Campo de data preenchido automaticamente, mas editável se necessário -->
+                    <label for="data" class="block text-sm font-medium text-gray-700">Data</label>
+                    <input type="date" id="data" name="data" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300 text-lg">
+                    Iniciar Prova
+                </button>
+            </form>
+        </div>
+
+        <!-- ===== 2. TELA DE AVISO DE SEGURANÇA ===== -->
+        <div id="aviso-container" class="p-8 md:p-12 fade-in hidden">
+            <h1 class="text-3xl font-bold text-red-700 mb-6">Atenção: Sistema de Segurança</h1>
+            <div class="space-y-4 text-gray-700 text-lg">
+                <p>Esta é uma avaliação monitorada. As seguintes ações <strong class="text-red-600">NÃO</strong> são permitidas:</p>
+                <ul class="list-disc list-inside space-y-2 pl-4">
+                    <li>Minimizar a janela do navegador.</li>
+                    <li>Alternar para outras abas ou aplicativos.</li>
+                    <li>Sair da tela cheia.</li>
+                    <li>Copiar qualquer conteúdo da prova.</li>
+                </ul>
+                <p class="font-semibold mt-6">Para uma melhor experiência e para evitar problemas, recomendamos fortemente que você ative o <strong class="text-blue-600">Modo de Tela Cheia (pressione F11)</strong> agora.</p>
+                
+                <p class="font-bold text-red-600 mt-4">Na <strong class="underline">primeira detecção</strong> de uma ação anormal, você receberá um aviso. Na <strong class="underline">segunda detecção</strong>, sua prova será encerrada automaticamente e você terá que reiniciar.</p>
+            </div>
+            
+            <button id="comecar-quiz-btn" class="mt-10 w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-green-700 transition-all duration-300 text-lg">
+                Entendido, começar a avaliação
+            </button>
+        </div>
+
+        <!-- ===== 3. TELA DO QUIZ ===== -->
+        <div id="quiz-container" class="p-8 md:p-12 hidden">
+            <!-- Cabeçalho do Quiz -->
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 id="nome-aluno-quiz" class="text-xl font-semibold text-blue-800"></h2>
+                    <p id="colegio-aluno-quiz" class="text-sm text-gray-500"></p>
+                </div>
+                <div class="text-right">
+                    <div class="text-2xl font-bold text-gray-700">
+                        Questão <span id="questao-atual-num"></span> de <span id="questao-total-num">20</span>
+                    </div>
+                    <div id="pontos-questao" class="text-sm font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded"></div>
+                </div>
+            </div>
+
+            <!-- Botão de Consulta de Material -->
+            <div class="mb-4 text-center">
+                <button id="consultar-btn" class="w-full sm:w-auto px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition-all duration-300">
+                    Consultar Material de Apoio
+                </button>
+            </div>
+
+            <!-- Card da Questão -->
+            <div id="questao-card" class_="bg-gray-50 p-6 rounded-lg shadow-inner border border-gray-200 fade-in">
+                <p id="texto-questao" class="text-lg font-medium text-gray-900 mb-6"></p>
+                
+                <!-- Alternativas -->
+                <div id="alternativas-container" class="space-y-4">
+                    <!-- Alternativas serão injetadas aqui pelo JS -->
+                </div>
+            </div>
+
+            <!-- Botão de Próxima -->
+            <button id="proxima-btn" class="mt-8 w-full bg-gray-400 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-300 text-lg" disabled>
+                Próxima Questão
+            </button>
+        </div>
+
+        <!-- ===== 4. TELA DE RESULTADO ===== -->
+        <div id="resultado-container" class="p-8 md:p-12 text-center fade-in hidden">
+            <h1 class="text-3xl font-bold text-blue-800 mb-4">Avaliação Concluída!</h1>
+            <p id="nome-aluno-resultado" class="text-xl text-gray-700 mb-8"></p>
+            
+            <div class="bg-blue-50 border-2 border-blue-200 rounded-lg p-8 w-fit mx-auto mb-8">
+                <p class="text-lg text-gray-600">Sua pontuação final foi:</p>
+                <div class="text-7xl font-extrabold text-blue-700 my-4">
+                    <span id="pontuacao-final">0</span>
+                </div>
+                <p class="text-lg text-gray-600">de <span id="pontuacao-maxima"></span> pontos possíveis.</p>
+            </div>
+            
+            <p id="feedback-firebase" class="text-gray-500 mb-8"></p>
+
+            <button onclick="reiniciarProva()" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300 text-lg">
+                Voltar ao Início
+            </button>
+        </div>
+
+        <!-- ===== 5. TELA DE ELIMINADO ===== -->
+        <div id="eliminado-container" class="p-8 md:p-12 text-center fade-in hidden">
+            <h1 class="text-3xl font-bold text-red-700 mb-4">Prova Encerrada</h1>
+            <p class="text-xl text-gray-700 mb-8">Uma ação não permitida foi detectada pela segunda vez e sua avaliação foi encerrada automaticamente.</p>
+            
+            <div class="bg-red-50 border-2 border-red-200 rounded-lg p-8 mb-8">
+                <p class="text-lg text-red-800">Seu progresso não foi salvo. Você será redirecionado para a tela inicial e deverá reiniciar a avaliação. Um novo conjunto de questões será sorteado.</p>
+            </div>
+
+            <button onclick="reiniciarProva()" class="w-full bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-red-700 transition-all duration-300 text-lg">
+                Reiniciar Avaliação
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ===== MODAL DE ALERTA (PRIMEIRA DETECÇÃO) ===== -->
+    <div id="modal-alerta" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden fade-in">
+        <div class="bg-white w-full max-w-lg rounded-lg shadow-2xl p-8 text-center">
+            <h2 class="text-3xl font-bold text-yellow-600 mb-4">Alerta!</h2>
+            <p class="text-lg text-gray-700 mb-6">Detectamos uma ação anormal (como sair da aba, minimizar ou tentar copiar). Esta é sua <strong class="font-bold">primeira advertência</strong>.</p>
+            <p class="text-lg text-red-700 font-semibold">Se ocorrer novamente, sua prova será <strong class="underline">ENCERRADA</strong> imediatamente.</p>
+            <button id="fechar-modal-btn" class="mt-8 w-full bg-yellow-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-yellow-600 transition-all duration-300 text-lg">
+                Entendido, voltar à prova
+            </button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DE CONSULTA PDF ===== -->
+    <div id="modal-pdf" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[60] hidden fade-in">
+        <div class="bg-white w-full max-w-4xl h-[90vh] rounded-lg shadow-2xl p-6 flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-indigo-700">Material de Consulta</h2>
+                <button id="fechar-pdf-btn" class="text-gray-600 hover:text-red-600 font-bold text-3xl">&times;</button>
+            </div>
+            <p class="text-sm text-gray-600 mb-4">Você pode navegar pelo material abaixo. Feche esta janela para retornar à questão.</p>
+            <div class="flex-1 border border-gray-300 rounded-lg overflow-hidden">
+                <!-- 
+                    NOTA PARA O PROFESSOR: 
+                    O arquivo "Referencial Completo de Estudo LEAN.pdf" deve estar na MESMA PASTA 
+                    que este arquivo index.html no seu servidor (ex: GitHub Pages) para funcionar.
+                -->
+                <iframe id="pdf-iframe" src="Referencial Completo de Estudo LEAN.pdf" width="100%" height="100%" title="Material de Consulta PDF"></iframe>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===== SCRIPTS ===== -->
+    
+    <!-- Scripts do Firebase (MANDATÓRIO) -->
+    <script type="module">
+        // Importar funções necessárias dos SDKs do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, collection, addDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // --- Variáveis Globais de Configuração (Fornecidas pelo Ambiente) ---
+        
+        // Configuração do Firebase
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : { apiKey: "AIzaSyARprg9q4VHYsFxOPSonpjjBnGuaTPKItM", authDomain: "avaliacao-f1dab.firebaseapp.com", projectId: "avaliacao-f1dab" };
+        
+        // ID da Aplicação
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        
+        // Token de Autenticação Inicial
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        // --- Variáveis Globais da Aplicação ---
+        let db, auth, userId;
+        let infoAluno = {};
+        let questoesSorteadas = [];
+        let questaoAtualIndex = 0;
+        let pontuacaoTotal = 0;
+        let pontuacaoMaximaPossivel = 0;
+        let respostasAluno = [];
+        let alternativaSelecionada = null; // { texto: string, correta: boolean }
+        let tentativasSaida = 0;
+        let provaIniciada = false;
+        let isModalPdfOpen = false; // Flag para controlar o modal do PDF
+
+        // --- Banco de Questões (Baseado no PDF) ---
+        // Pelo menos 40 questões (20 grupos de 2 variações)
+        // ATUALIZADO: 60%+ são estudos de caso e alternativas com tamanho balanceado.
+        const questionBank = [
+            // Grupo 1: Definição de Lean (Fácil - Conhecimento)
+            { id: 1.1, grupo: 1, texto: "Qual é a definição mais fundamental da filosofia 'Lean', conforme originada do Sistema Toyota de Produção (TPS)?", 
+              alternativas: [
+                { texto: "Uma filosofia de gestão focada na eliminação absoluta de desperdícios e na 'economia de fluxo'.", correta: true },
+                { texto: "Um método de produção focado exclusivamente na 'economia de escala' para reduzir o custo unitário.", correta: false },
+                { texto: "Um sistema de controle de qualidade estatístico, conhecido como Six Sigma, focado em variabilidade.", correta: false },
+                { texto: "Uma metodologia de gestão de projetos ágeis para desenvolvimento rápido de software.", correta: false },
+                { texto: "Um programa de organização do local de trabalho baseado nos 5S para manter a limpeza.", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+            { id: 1.2, grupo: 1, texto: "O Sistema Toyota de Produção (TPS), que deu origem ao Lean, foi desenvolvido em um contexto de escassez. Qual era seu foco principal?",
+              alternativas: [
+                { texto: "Focar na 'economia de escala', produzindo o máximo possível para reduzir custos.", correta: false },
+                { texto: "Focar na 'economia de fluxo' e na eliminação de qualquer atividade que não agregasse valor.", correta: true },
+                { texto: "Focar na automação completa das fábricas, eliminando a necessidade de operadores humanos.", correta: false },
+                { texto: "Focar na compra de grandes lotes de matéria-prima para sempre garantir descontos de volume.", correta: false },
+                { texto: "Focar na inspeção de qualidade 100% no final da linha para garantir zero defeitos ao cliente.", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+            
+            // Grupo 2: Arquitetos do TPS (Fácil - Conhecimento)
+            { id: 2.1, grupo: 2, texto: "Quem são os dois indivíduos universalmente reconhecidos como os principais arquitetos do Sistema Toyota de Produção (TPS)?", 
+              alternativas: [
+                { texto: "Taiichi Ohno e Shigeo Shingo.", correta: true },
+                { texto: "James P. Womack e Daniel T. Jones.", correta: false },
+                { texto: "W. Edwards Deming e Henry Ford.", correta: false },
+                { texto: "Eiji Toyoda e Eric Ries.", correta: false },
+                { texto: "Henry Ford e Taiichi Ohno.", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+            { id: 2.2, grupo: 2, texto: "Qual dos arquitetos do TPS é creditado pelo desenvolvimento de técnicas práticas como Poka-Yoke (à prova de erros) e SMED (Troca Rápida de Ferramentas)?",
+              alternativas: [
+                { texto: "Taiichi Ohno, o pai do TPS e da eliminação de desperdícios.", correta: false },
+                { texto: "Eiji Toyoda, o líder executivo que impulsionou a visão da Toyota.", correta: false },
+                { texto: "Shigeo Shingo, o engenheiro que traduziu a filosofia em mecanismos práticos.", correta: true },
+                { texto: "James P. Womack, o pesquisador do MIT que cunhou o termo 'Lean'.", correta: false },
+                { texto: "W. Edwards Deming, o estatístico que ensinou o controle de qualidade no Japão.", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+
+            // Grupo 3: Diferença Lean vs TPS (Médio - Estudo de Caso)
+            { id: 3.1, grupo: 3, texto: "Estudo de Caso: Uma empresa implementa 'Eventos Kaizen' de 5 dias e foca no VSM. Após 6 meses, os processos antigos retornam. Qual pilar do TPS foi provavelmente 'esquecido' ou 'mal compreendido' nesta implementação 'Lean' Ocidental?",
+              alternativas: [
+                { texto: "O pilar Jidoka (qualidade na fonte) e o 'Respeito pelas Pessoas', que são menos tangíveis que as ferramentas.", correta: true },
+                { texto: "O pilar Just-in-Time (JIT), pois a empresa provavelmente manteve seus estoques altos durante os eventos.", correta: false },
+                { texto: "O conceito de 5S, pois a desorganização certamente foi a causa do retorno dos problemas antigos.", correta: false },
+                { texto: "O Mapeamento do Fluxo de Valor (VSM), pois a ferramenta provavelmente foi aplicada incorretamente pela equipe.", correta: false },
+                { texto: "A filosofia do Kaizen, que é estritamente sobre eventos de 5 dias e não sobre a prática diária.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+            { id: 3.2, grupo: 3, texto: "Estudo de Caso: Uma montadora concorrente da Toyota decide adotar o 'Lean'. A diretoria se recusa a chamar o programa de 'Sistema Toyota'. Por que o termo 'Lean', cunhado por Womack, foi uma 'necessidade de tradução cultural'?",
+              alternativas: [
+                { texto: "Porque o 'Lean' era uma tradução literal dos manuais do TPS para o inglês, facilitando a leitura.", correta: false },
+                { texto: "Porque o 'Lean' removeu os conceitos japoneses de 'Muda' e 'Mura', focando apenas em 'Muri'.", correta: false },
+                { texto: "Porque era comercial e politicamente inviável para concorrentes (como a Ford) adotarem o 'Sistema Toyota' de um rival.", correta: true },
+                { texto: "Porque a Toyota patenteou o termo 'TPS', forçando o Ocidente a criar um novo nome para o mesmo sistema.", correta: false },
+                { texto: "Porque o 'Lean' era focado em hospitais e bancos, enquanto o TPS era apenas para carros, necessitando um nome novo.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Compreensão' },
+
+            // Grupo 4: 3M (Muda, Mura, Muri) (Médio - Estudo de Caso)
+            { id: 4.1, grupo: 4, texto: "Estudo de Caso: Um centro de distribuição tem dias de 1000 pedidos (Mura) e dias de 200. Nos dias de pico, os operadores trabalham freneticamente (Muri) e cometem erros de envio (Muda). Qual é a causa raiz que o Lean atacaria primeiro?",
+              alternativas: [
+                { texto: "O Muri (sobrecarga), contratando mais pessoas para os dias de pico e mantendo-as ociosas nos dias de vale.", correta: false },
+                { texto: "O Muda (erros), implementando um sistema de inspeção tripla no final do processo para corrigir os envios.", correta: false },
+                { texto: "O Mura (irregularidade), tentando nivelar a demanda (Heijunka) ou o processamento para estabilizar o fluxo.", correta: true },
+                { texto: "O Muda (erros), treinando os operadores para serem mais cuidadosos mesmo sob pressão (Muri).", correta: false },
+                { texto: "O Muri (sobrecarga), investindo em robôs caros para substituir os operadores que cometem erros.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
+            { id: 4.2, grupo: 4, texto: "Analisando os 3M (Muda, Mura, Muri), qual é a interconexão causal correta que explica por que 'caçar o desperdício' (Muda) isoladamente falha?",
+              alternativas: [
+                { texto: "Muda (desperdício) é a causa raiz que leva a Muri (sobrecarga) e Mura (irregularidade) no sistema.", correta: false },
+                { texto: "Muri (sobrecarga) é a causa raiz, pois força os operadores a criar irregularidades (Mura) e desperdícios (Muda).", correta: false },
+                { texto: "Mura (irregularidade) é a causa raiz, que leva a gestão a criar Muri (sobrecarga) para compensar, gerando Muda (desperdício).", correta: true },
+                { texto: "Os 3M são conceitos independentes; um verdadeiro praticante Lean ataca todos os três ao mesmo tempo, sem prioridade.", correta: false },
+                { texto: "Muda, Mura e Muri são apenas três palavras diferentes para o mesmo problema, que é o excesso de estoque.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
+
+            // Grupo 5: Muri (Fácil - Conhecimento)
+            { id: 5.1, grupo: 5, texto: "No contexto dos 3M, o que significa 'Muri'?",
+              alternativas: [
+                { texto: "Irregularidade ou variabilidade no processo, como picos e vales de demanda.", correta: false },
+                { texto: "Qualquer atividade que consome recursos mas não agrega valor ao cliente (desperdício).", correta: false },
+                { texto: "Sobrecarga de pessoas, equipamentos ou sistemas, exigindo que operem além da capacidade razoável.", correta: true },
+                { texto: "Um tipo de cartão visual utilizado no sistema de produção puxada para sinalizar a reposição.", correta: false },
+                { texto: "A filosofia de melhoria contínua incremental realizada por todos na organização.", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+            { id: 5.2, grupo: 5, texto: "Operadores trabalhando em ritmo frenético, máquinas operando 100% do tempo sem manutenção, ou funcionários sobrecarregados mentalmente são exemplos de qual dos 3M?",
+              alternativas: [
+                { texto: "Muda (Desperdício de Habilidades)", correta: false },
+                { texto: "Mura (Irregularidade)", correta: false },
+                { texto: "Muri (Sobrecarga)", correta: true },
+                { texto: "Kaizen (Melhoria)", correta: false },
+                { texto: "Jidoka (Autonomação)", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+            
+            // Grupo 6: Pior Desperdício (Superprodução) (Médio - Estudo de Caso)
+            { id: 6.1, grupo: 6, texto: "Estudo de Caso: Uma gráfica imprime 10.000 folhetos com base em uma previsão (Push), mas o cliente só precisa de 1.000 por mês. Este ato é considerado o 'pior dos desperdícios'. Por quê?",
+              alternativas: [
+                { texto: "Porque a superprodução é a causa de muitos outros desperdícios (gera Estoque, Transporte e esconde Defeitos).", correta: true },
+                { texto: "Porque o custo do papel (Defeito) é o maior custo individual, superando todos os outros desperdícios.", correta: false },
+                { texto: "Porque o 'Movimento' dos operadores para carregar tanto papel é o principal risco de segurança na gráfica.", correta: false },
+                { texto: "Porque a 'Espera' do cliente pelo primeiro lote de 1.000 folhetos foi provavelmente muito longa.", correta: false },
+                { texto: "Porque o 'Processamento Excessivo' (usar tinta cara) é sempre o principal problema em gráficas.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+            { id: 6.2, grupo: 6, texto: "Produzir mais, mais cedo ou mais rápido do que o próximo processo (ou o cliente final) necessita, é a definição de qual desperdício?",
+              alternativas: [
+                { texto: "Processamento Excessivo (Overprocessing)", correta: false },
+                { texto: "Superprodução (Overproduction)", correta: true },
+                { texto: "Inventário (Inventory)", correta: false },
+                { texto: "Transporte (Transportation)", correta: false },
+                { texto: "Defeitos (Defects)", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+
+            // Grupo 7: 8º Desperdício (Talento) (Médio - Estudo de Caso)
+            { id: 7.1, grupo: 7, texto: "Estudo de Caso: Um gerente de chão de fábrica implementa um novo procedimento e ignora as sugestões de melhoria dos operadores, que conhecem a máquina há 10 anos. Qual dos 8 desperdícios está sendo cometido?",
+              alternativas: [
+                { texto: "Processamento Excessivo, pois o gerente está adicionando burocracia desnecessária.", correta: false },
+                { texto: "Movimento, pois o gerente teve que caminhar até a linha de produção para falar.", correta: false },
+                { texto: "Habilidades Não Utilizadas (Talento), pois o potencial intelectual da equipe está sendo subaproveitado.", correta: true },
+                { texto: "Espera, pois os operadores tiveram que parar para ouvir o gerente falar sobre o procedimento.", correta: false },
+                { texto: "Defeitos, pois o novo procedimento do gerente provavelmente causará erros na produção.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+            { id: 7.2, grupo: 7, texto: "Estudo de Caso: Uma enfermeira altamente qualificada passa 30% do seu dia preenchendo formulários manualmente e procurando equipamentos. Qual dos 8 desperdícios se destaca em relação ao seu potencial?",
+              alternativas: [
+                { texto: "Habilidades Não Utilizadas (Talento), pois seu conhecimento médico é desperdiçado em tarefas de baixo valor.", correta: true },
+                { texto: "Muri (Sobrecarga), pois ela está claramente sobrecarregada, embora esta não seja a melhor resposta.", correta: false },
+                { texto: "Poka-Yoke, pois o hospital deveria ter um sistema à prova de erros para formulários.", correta: false },
+                { texto: "Superprodução, pois ela está provavelmente preenchendo mais formulários do que o necessário.", correta: false },
+                { texto: "Estoque, pois os formulários preenchidos representam um inventário de informações.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+
+            // Grupo 8: 5 Princípios (Fácil - Conhecimento)
+            { id: 8.1, grupo: 8, texto: "Qual é a sequência correta dos 5 Princípios do Lean Thinking, conforme definidos por Womack e Jones, que serve como uma 'receita' para a transformação?",
+              alternativas: [
+                { texto: "1. Valor, 2. Fluxo, 3. Mapeamento do Fluxo de Valor, 4. Puxar, 5. Perfeição.", correta: false },
+                { texto: "1. Valor, 2. Mapeamento do Fluxo de Valor, 3. Fluxo, 4. Puxar, 5. Perfeição.", correta: true },
+                { texto: "1. Puxar, 2. Fluxo, 3. Valor, 4. Mapeamento do Fluxo de Valor, 5. Perfeição.", correta: false },
+                { texto: "1. Perfeição, 2. Valor, 3. Fluxo, 4. Puxar, 5. Mapeamento do Fluxo de Valor.", correta: false },
+                { texto: "1. Valor, 2. Mapeamento do Fluxo de Valor, 3. Puxar, 4. Fluxo, 5. Perfeição.", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+            { id: 8.2, grupo: 8, texto: "Segundo Womack e Jones, o primeiro passo (Princípio 1) de qualquer transformação Lean é 'Especificar o Valor'. Sob qual perspectiva o Valor deve ser definido?",
+              alternativas: [
+                { texto: "Da perspectiva da engenharia, que define as especificações técnicas mais robustas.", correta: false },
+                { texto: "Da perspectiva da gestão, que define o menor custo de produção possível para a empresa.", correta: false },
+                { texto: "Unicamente da perspectiva do cliente final, definindo o que ele realmente está disposto a pagar.", correta: true },
+                { texto: "Da perspectiva do marketing, que define quais recursos adicionais podem ser incluídos no produto.", correta: false },
+                { texto: "Da perspectiva do financeiro, que define a margem de lucro esperada para cada produto.", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+
+            // Grupo 9: VSM (Médio - Estudo de Caso)
+            { id: 9.1, grupo: 9, texto: "Estudo de Caso: Uma equipe mapeia um processo (Estado Atual VSM) e descobre que o tempo de agregação de valor (VA) é de 30 minutos, mas o Lead Time total é de 15 dias. O que um VSM revela que um fluxograma simples não mostraria?",
+              alternativas: [
+                { texto: "O VSM foca apenas no fluxo de informação, enquanto o fluxograma foca no fluxo de material.", correta: false },
+                { texto: "O VSM quantifica o tempo de VA vs. NVA (Não Agrega Valor) e mapeia o fluxo de informação (pedidos) junto com o de material.", correta: true },
+                { texto: "O VSM mostra apenas a sequência de tarefas, sem coletar dados de tempo ou estoque.", correta: false },
+                { texto: "O VSM é usado apenas para o 'Estado Futuro', enquanto o fluxograma é usado para o 'Estado Atual'.", correta: false },
+                { texto: "O VSM é uma ferramenta de 5S para organizar o local de trabalho, não para mapear processos.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
+            { id: 9.2, grupo: 9, texto: "Estudo de Caso: Após mapear o 'Estado Atual' (15 dias de Lead Time), a equipe projeta um 'Estado Futuro' (2 dias de Lead Time). O que este 'Estado Futuro' provavelmente incluiria?",
+              alternativas: [
+                { texto: "A adição de mais inspeções e aprovações para garantir que os 30 minutos de VA sejam perfeitos.", correta: false },
+                { texto: "A manutenção do sistema 'Empurrado' (Push), mas com uma previsão de demanda muito mais precisa.", correta: false },
+                { texto: "A implementação de fluxo contínuo e produção puxada (Pull) para eliminar os desperdícios de Espera e Estoque.", correta: true },
+                { texto: "A automação de todas as etapas, independentemente do custo, para acelerar o processo.", correta: false },
+                { texto: "O aumento do estoque intermediário para garantir que a próxima etapa nunca precise esperar por material.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
+
+            // Grupo 10: Fluxo Contínuo vs. Lotes (Médio - Estudo de Caso)
+            { id: 10.1, grupo: 10, texto: "Estudo de Caso: Uma pizzaria opera em 'lotes': ela espera acumular 10 pedidos de pepperoni (Estoque) para depois assar todos juntos. Isso gera 'Espera' para os clientes. Qual princípio Lean essa pizzaria está quebrando?",
+              alternativas: [
+                { texto: "O Princípio do Fluxo Contínuo (one-piece flow), que buscaria fazer um pedido de cada vez suavemente.", correta: true },
+                { texto: "O Princípio do Valor, pois os clientes claramente não valorizam o pepperoni, preferindo outros sabores.", correta: false },
+                { texto: "O Princípio da Perfeição (Kaizen), pois a pizzaria nunca tenta melhorar seus processos.", correta: false },
+                { texto: "O pilar Jidoka, pois não há um sistema para parar a produção se uma pizza queimar no forno.", correta: false },
+                { texto: "O pilar TPM, pois os fornos provavelmente não estão recebendo a manutenção adequada.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+            { id: 10.2, grupo: 10, texto: "O 'Fluxo Contínuo' (Princípio 3) é o oposto direto da produção em lotes. Qual é o ideal que ele busca alcançar no processo de produção?",
+              alternativas: [
+                { texto: "O ideal de 'fluxo de uma peça por vez' (one-piece flow), movendo-se suavemente entre as etapas sem paradas.", correta: true },
+                { texto: "O ideal de 'inspeção 100%', onde cada peça é verificada em massa no final da linha de produção.", correta: false },
+                { texto: "O ideal de 'grandes lotes econômicos', que maximiza a utilização de cada máquina individualmente.", correta: false },
+                { texto: "O ideal de 'estoque de segurança', que protege o sistema contra qualquer tipo de falha ou variabilidade.", correta: false },
+                { texto: "O ideal de 'sistema empurrado' (push), onde a produção é baseada em uma previsão de demanda precisa.", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Compreensão' },
+            
+            // Grupo 11: Sistema Puxado (Pull) (Médio - Estudo de Caso)
+            { id: 11.1, grupo: 11, texto: "Estudo de Caso: Em um supermercado, quando você 'puxa' (compra) um iogurte da prateleira, o sistema sinaliza para o estoque repor aquele item. O que é o oposto disso, conhecido como sistema 'Empurrado' (Push)?",
+              alternativas: [
+                { texto: "Um sistema 'Push' é quando o laticínio 'empurra' 500 iogurtes para o supermercado com base em uma previsão, independente da demanda real.", correta: true },
+                { texto: "Um sistema 'Push' é quando o cliente 'empurra' o carrinho pelo corredor, em vez de 'puxar' o iogurte.", correta: false },
+                { texto: "Um sistema 'Push' é quando o cliente avisa ao gerente que pegou o iogurte, e o gerente 'empurra' o repositor.", correta: false },
+                { texto: "Um sistema 'Push' é idêntico a um sistema 'Pull'; os termos são usados de forma intercambiável no Lean.", correta: false },
+                { texto: "Um sistema 'Push' é quando o laticínio espera o supermercado ficar sem estoque para 'empurrar' a reposição.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
+            { id: 11.2, grupo: 11, texto: "Um sistema 'Puxado' (Pull System), onde nada é produzido até que o cliente (interno ou final) demande, é o princípio que operacionaliza qual conceito central do TPS?",
+              alternativas: [
+                { texto: "O conceito de Jidoka (Autonomação), pois a qualidade puxa o processo.", correta: false },
+                { texto: "O conceito de Poka-Yoke (À prova de erros), pois impede a produção errada.", correta: false },
+                { texto: "O conceito de Just-in-Time (JIT), eliminando a superprodução e o excesso de estoque.", correta: true },
+                { texto: "O conceito de 5S (Organização), pois a ordem no local de trabalho puxa a eficiência.", correta: false },
+                { texto: "O conceito de TPM (Manutenção), pois máquinas confiáveis puxam a produção.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Compreensão' },
+            
+            // Grupo 12: Perfeição (Kaizen/PDCA) (Difícil - Estudo de Caso)
+            { id: 12.1, grupo: 12, texto: "Estudo de Caso: Uma equipe de melhoria identifica um problema (Plan), implementa uma pequena mudança (Do) e mede os resultados (Check). O resultado é positivo. Qual é a etapa 'Act' (Agir) crucial que transforma isso em 'Kaizen' (melhoria contínua)?",
+              alternativas: [
+                { texto: "A etapa 'Act' é celebrar o sucesso e procurar o próximo problema, deixando a mudança como um 'experimento'.", correta: false },
+                { texto: "A etapa 'Act' é padronizar a mudança bem-sucedida para que ela se torne o novo processo normal, e então reiniciar o ciclo.", correta: true },
+                { texto: "A etapa 'Act' é documentar a falha (se houver) e punir a equipe para que não cometam o mesmo erro novamente.", correta: false },
+                { texto: "A etapa 'Act' é o mesmo que a etapa 'Do'; significa apenas 'agir' e implementar o plano original em larga escala.", correta: false },
+                { texto: "A etapa 'Act' é desfazer a mudança após o 'Check' para provar que a melhoria era real, retornando ao estado anterior.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Avaliação' },
+            { id: 12.2, grupo: 12, texto: "O Princípio 5, 'Perfeição', não é um destino final, mas um processo cultural de melhoria contínua (Kaizen). Qual é o método científico usado para implementar o Kaizen?",
+              alternativas: [
+                { texto: "O método VSM (Mapeamento do Fluxo de Valor), que planeja, faz, verifica e age no fluxo.", correta: false },
+                { texto: "O método dos 5 Porquês, que busca a causa raiz dos problemas para a perfeição.", correta: false },
+                { texto: "O método do Ciclo PDCA (Plan-Do-Check-Act), que aplica o método científico à melhoria.", correta: true },
+                { texto: "O método Jidoka (Autonomação), que para a linha para buscar a perfeição na qualidade.", correta: false },
+                { texto: "O método Kanban, que sinaliza visualmente a necessidade de melhoria contínua.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Compreensão' }, // Mudei para médio
+
+            // Grupo 13: JIT vs Kanban (Médio - Análise)
+            { id: 13.1, grupo: 13, texto: "Um erro comum é confundir Just-in-Time (JIT) e Kanban. Qual é a relação correta entre os dois conceitos?",
+              alternativas: [
+                { texto: "JIT e Kanban são a mesma coisa; Kanban é apenas o termo japonês para JIT.", correta: false },
+                { texto: "Kanban é a estratégia filosófica (estoque zero), enquanto JIT é a ferramenta (cartão visual) que a habilita.", correta: false },
+                { texto: "JIT é a estratégia ou filosofia (produção puxada, estoque zero), enquanto Kanban é o mecanismo (sinal visual) que permite ao JIT operar.", correta: true },
+                { texto: "JIT é o pilar da qualidade (Jidoka), enquanto Kanban é o pilar do fluxo de materiais.", correta: false },
+                { texto: "Kanban é usado para 'empurrar' (Push) a produção, enquanto o JIT é usado para 'puxar' (Pull).", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
+            { id: 13.2, grupo: 13, texto: "Estudo de Caso: Em uma linha de montagem, o operador da Estação B pega uma caixa de peças da Estação A. A caixa vazia é enviada de volta para a Estação A, sinalizando que ela deve produzir *apenas* uma nova caixa. Isso é um exemplo de:",
+              alternativas: [
+                { texto: "Um sistema Puxado (Pull) habilitado por um Kanban (a caixa vazia) para operar o JIT.", correta: true },
+                { texto: "Um sistema Empurrado (Push), pois a Estação A está 'empurrando' caixas para a Estação B.", correta: false },
+                { texto: "Um sistema Jidoka, pois a caixa vazia detecta um defeito na produção da Estação A.", correta: false },
+                { texto: "Um sistema 5S, pois a caixa vazia está sendo usada para manter a área organizada.", correta: false },
+                { texto: "Um sistema Muri, pois a Estação A está sobrecarregada por ter que preencher a caixa.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+            
+            // Grupo 14: Jidoka (Difícil - Estudo de Caso)
+            { id: 14.1, grupo: 14, texto: "Estudo de Caso: Uma máquina na linha de produção detecta uma peça desalinhada, para automaticamente e acende uma luz (Andon). Por que este princípio (Jidoka) é diferente da automação tradicional?",
+              alternativas: [
+                { texto: "Porque a automação tradicional focaria em quantidade, continuando a operar mesmo produzindo peças defeituosas.", correta: true },
+                { texto: "Porque a automação tradicional é 'burra' e não consegue detectar peças desalinhadas, apenas quebras totais.", correta: false },
+                { texto: "Porque Jidoka é um processo manual, onde o operador (não a máquina) decide parar a linha ao ver o defeito.", correta: false },
+                { texto: "Porque Jidoka é o mesmo que JIT, focando no fluxo de peças, não na qualidade ou na parada da linha.", correta: false },
+                { texto: "Porque a automação tradicional é mais barata e eficiente, enquanto Jidoka é caro e raramente usado.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Análise' },
+            { id: 14.2, grupo: 14, texto: "Estudo de Caso: Uma empresa adota o JIT (que reduz custos de estoque) mas ignora o Jidoka (que exige parar a linha). Por que o material afirma que isso resulta em 'sistemas frágeis'?",
+              alternativas: [
+                { texto: "Porque sem o Jidoka, a empresa não consegue implementar o 5S, que é a base da estabilidade.", correta: false },
+                { texto: "Porque o JIT (com baixo estoque) propaga defeitos muito rapidamente, e sem o Jidoka (parada na fonte), o sistema produzirá 100% de sucata.", correta: true },
+                { texto: "Porque o Jidoka é o pilar que garante a manutenção (TPM), e sem ele as máquinas quebram.", correta: false },
+                { texto: "Porque o JIT é focado em 'empurrar' a produção, e o Jidoka é focado em 'puxar', causando um conflito.", correta: false },
+                { texto: "Porque o Jidoka é a única forma de obter 'Respeito pelas Pessoas', e sem ele os operadores não trabalham.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Análise' },
+
+            // Grupo 15: Poka-Yoke (Médio - Estudo de Caso)
+            { id: 15.1, grupo: 15, texto: "Estudo de Caso: Para evitar que os clientes coloquem diesel em um carro a gasolina, o bocal da bomba de diesel é projetado para ser maior que o tanque de gasolina. Este é um exemplo de qual ferramenta Lean?",
+              alternativas: [
+                { texto: "Jidoka (Autonomação), pois o carro para se o combustível errado for colocado.", correta: false },
+                { texto: "Kanban (Sinal Visual), pois o bocal maior sinaliza que é o combustível errado.", correta: false },
+                { texto: "Poka-Yoke (À prova de erros), pois o design torna o erro fisicamente impossível de ser cometido.", correta: true },
+                { texto: "5S (Organização), pois os bocais estão ordenados (Seiton) por tamanho no posto.", correta: false },
+                { texto: "Kaizen (Melhoria Contínua), pois é uma melhoria no design do carro.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+            { id: 15.2, grupo: 15, texto: "O objetivo do Poka-Yoke é atingir 'Zero Defeitos' tornando o erro humano impossível. Qual dos exemplos abaixo NÃO é um Poka-Yoke?",
+              alternativas: [
+                { texto: "Um conector USB ou HDMI, que só pode ser inserido da maneira correta.", correta: false },
+                { texto: "Um verificador ortográfico que *alerta* sobre erros, mas *permite* que você os ignore.", correta: false }, // Distrator - é um Poka-Yoke de detecção
+                { texto: "Um cartão Kanban que sinaliza a necessidade de mais peças para a linha de produção.", correta: true },
+                { texto: "Pinos-guia em uma montagem que impedem fisicamente que a peça seja montada ao contrário.", correta: false },
+                { texto: "Armários que só permitem abrir uma gaveta por vez para evitar tombamento.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' }, // A resposta (C) é claramente não um Poka-Yoke.
+
+            // Grupo 16: 5 Porquês (Médio - Estudo de Caso)
+            { id: 16.1, grupo: 16, texto: "Estudo de Caso: Uma máquina para (Problema). O operador troca o fusível (Solução 1). No dia seguinte, ela para de novo. Um supervisor aplica os 5 Porquês e descobre que a causa raiz era 'falta de lubrificação'. O que a primeira solução falhou em fazer?",
+              alternativas: [
+                { texto: "Falhou em resolver o sintoma (o fusível queimado) e atacou apenas a causa raiz.", correta: false },
+                { texto: "Falhou em aplicar o Poka-Yoke, que teria impedido a queima do fusível.", correta: false },
+                { texto: "Falhou em atacar a causa raiz (falta de lubrificação) e resolveu apenas o sintoma (fusível queimado).", correta: true },
+                { texto: "Falhou em implementar o JIT, que teria fornecido um novo fusível no momento exato.", correta: false },
+                { texto: "Falhou em usar o VSM para mapear o processo de troca de fusíveis na fábrica.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+            { id: 16.2, grupo: 16, texto: "Estudo de Caso (continuação): A análise dos 5 Porquês da máquina que parou revelou que a bomba de lubrificação falhou porque 'cavacos (aparas) entraram nela'. A equipe então instala uma 'proteção' para impedir a entrada de cavacos. Essa solução (a proteção) é um exemplo de:",
+              alternativas: [
+                { texto: "Um Poka-Yoke (à prova de erros), pois impede fisicamente a ocorrência do problema.", correta: true },
+                { texto: "Um Kanban, pois a proteção sinaliza visualmente quando os cavacos estão se acumulando.", correta: false },
+                { texto: "Um sistema Puxado (Pull system), pois a proteção puxa a lubrificação.", correta: false },
+                { texto: "Um VSM do Estado Futuro, pois o mapa do processo agora inclui a proteção.", correta: false },
+                { texto: "Um Muda Tipo 1, pois a proteção é uma atividade necessária que não agrega valor.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' },
+
+            // Grupo 17: 5S (Fácil - Conhecimento)
+            { id: 17.1, grupo: 17, texto: "Qual 'S' do 5S é descrito como 'Separar o que é necessário do que é desnecessário no local de trabalho e descartar o último'?",
+              alternativas: [
+                { texto: "Seiri (Senso de Utilização)", correta: true },
+                { texto: "Seiton (Senso de Ordenação)", correta: false },
+                { texto: "Seiso (Senso de Limpeza)", correta: false },
+                { texto: "Seiketsu (Senso de Padronização)", correta: false },
+                { texto: "Shitsuke (Senso de Disciplina)", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+            { id: 17.2, grupo: 17, texto: "Qual 'S' do 5S é descrito como 'Um lugar para cada coisa, e cada coisa em seu lugar', focando na organização e facilidade de acesso?",
+              alternativas: [
+                { texto: "Seiri (Senso de Utilização)", correta: false },
+                { texto: "Seiton (Senso de Ordenação)", correta: true },
+                { texto: "Seiso (Senso de Limpeza)", correta: false },
+                { texto: "Seiketsu (Senso de Padronização)", correta: false },
+                { texto: "Shitsuke (Senso de Disciplina)", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+
+            // Grupo 18: TPM e JIT (Difícil - Síntese)
+            { id: 18.1, grupo: 18, texto: "Por que a Manutenção Produtiva Total (TPM) é considerada uma 'fundação de estabilidade' e uma habilitadora essencial para o Just-in-Time (JIT)?",
+              alternativas: [
+                { texto: "Porque o TPM foca em organizar (5S), o que torna o JIT mais rápido.", correta: false },
+                { texto: "Porque o JIT opera sem estoques de segurança; se uma máquina-chave quebra (falha de TPM), o fluxo inteiro para (Espera).", correta: true },
+                { texto: "Porque o TPM é o mesmo que Jidoka, e ambos param a linha quando há um defeito.", correta: false },
+                { texto: "Porque o TPM e o JIT são opostos; uma empresa deve escolher um ou outro.", correta: false },
+                { texto: "Porque o TPM foca em 'Zero Acidentes', o que não tem relação com o JIT.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' },
+            { id: 18.2, grupo: 18, texto: "Estudo de Caso: Uma fábrica implementa um sistema JIT (Pull) perfeito, reduzindo o estoque a quase zero. No entanto, eles não implementam o TPM. O que acontece quando a máquina principal da linha quebra inesperadamente?",
+              alternativas: [
+                { texto: "Nada, o sistema JIT continua funcionando usando os estoques de segurança que ele mantém.", correta: false },
+                { texto: "O sistema inteiro para imediatamente, gerando um desperdício massivo de Espera para todas as etapas seguintes.", correta: true },
+                { texto: "A qualidade (Jidoka) melhora, pois a máquina quebrada não pode produzir defeitos.", correta: false },
+                { texto: "O sistema automaticamente se converte em um sistema 'Push' (Empurrado) para compensar a falha.", correta: false },
+                { texto: "Apenas a máquina quebrada para; as outras continuam operando normalmente por dias.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Aplicação' },
+            
+            // Grupo 19: Lean Office (Médio - Estudo de Caso)
+            { id: 19.1, grupo: 19, texto: "Estudo de Caso: Em um escritório, um pedido de compra exige 8 assinaturas (Processamento Excessivo) e fica dias na caixa de entrada de e-mail de um gerente (Espera/Inventário). Como o 'Lean Office' enxerga esse processo?",
+              alternativas: [
+                { texto: "Como um processo robusto e seguro, pois as 8 assinaturas garantem o controle da qualidade.", correta: false },
+                { texto: "Como um processo cheio de desperdícios (Muda), onde o fluxo de informação (o 'produto') é invisível e está bloqueado.", correta: true },
+                { texto: "Como um exemplo de Jidoka, pois cada gerente que assina está inspecionando o pedido na fonte.", correta: false },
+                { texto: "Como um problema de Muri (Sobrecarga), pois o gerente com 800 e-mails está sobrecarregado.", correta: false }, // Distrator, mas (B) é melhor
+                { texto: "Como um problema de 5S, pois a caixa de entrada do gerente está desorganizada (falta Seiton).", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
+            { id: 19.2, grupo: 19, texto: "Qual é o principal desafio da aplicação do Lean em ambientes administrativos (Lean Office) em comparação com a fábrica?",
+              alternativas: [
+                { texto: "No escritório não existem desperdícios (Muda), tornando o Lean inútil.", correta: false },
+                { texto: "O 'fluxo de trabalho' (informação) é muitas vezes invisível, preso em e-mails e sistemas, dificultando a 'enxergar' o desperdício.", correta: true },
+                { texto: "Os funcionários de escritório são mais resistentes a mudanças do que os operadores de fábrica.", correta: false },
+                { texto: "O JIT e o Kanban não podem ser aplicados de forma alguma em um fluxo de informação.", correta: false },
+                { texto: "O principal desperdício no escritório é o 'Movimento', enquanto na fábrica é o 'Estoque'.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Compreensão' },
+
+            // Grupo 20: Lean Startup (Difícil - Síntese)
+            { id: 20.1, grupo: 20, texto: "Estudo de Caso: Uma startup gasta 2 anos e $1 milhão construindo um produto complexo (Superprodução/Processamento Excessivo). Ao lançar, descobre que ninguém quer usá-lo. Como a metodologia 'Lean Startup' evitaria esse desperdício?",
+              alternativas: [
+                { texto: "Focando no 5S do escritório para que os programadores sejam mais organizados e rápidos.", correta: false },
+                { texto: "Usando o ciclo Construir-Medir-Aprender: construir um Produto Mínimo Viável (MVP) rápido, medir a reação de clientes reais e aprender (Perseverar ou Pivotar).", correta: true },
+                { texto: "Aplicando o Jidoka, para que o programador pare a linha de código sempre que detectar um bug.", correta: false },
+                { texto: "Usando os 5 Porquês para descobrir por que os clientes não querem o produto, mas somente *após* o lançamento.", correta: false },
+                { texto: "Implementando um sistema Kanban para gerenciar as tarefas dos programadores de forma mais visual.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' },
+            { id: 20.2, grupo: 20, texto: "A metodologia 'Lean Startup' (Construir-Medir-Aprender) é uma aplicação direta de qual outro conceito fundamental do Lean/TPS?",
+              alternativas: [
+                { texto: "Do Jidoka (Autonomação), pois o MVP para o processo de desenvolvimento se estiver errado.", correta: false },
+                { texto: "Do Poka-Yoke (À prova de erros), pois o MVP impede que a startup cometa erros de mercado.", correta: false },
+                { texto: "Do Ciclo PDCA (Plan-Do-Check-Act), pois 'Construir' (Do), 'Medir' (Check) e 'Aprender' (Act/Plan) é o método científico aplicado à inovação.", correta: true },
+                { texto: "Do 5S (Organização), pois uma startup organizada aprende mais rápido com seus clientes.", correta: false },
+                { texto: "Do TPM (Manutenção), pois os servidores da startup precisam de manutenção para rodar o MVP.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' }
+        ];
+
+        // --- Seletores de DOM ---
+        const inicioContainer = document.getElementById('inicio-container');
+        const avisoContainer = document.getElementById('aviso-container');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultadoContainer = document.getElementById('resultado-container');
+        const eliminadoContainer = document.getElementById('eliminado-container');
+        const modalAlerta = document.getElementById('modal-alerta');
+        const modalPdf = document.getElementById('modal-pdf');
+        
+        const formInicio = document.getElementById('form-inicio');
+        const comecarQuizBtn = document.getElementById('comecar-quiz-btn');
+        const fecharModalBtn = document.getElementById('fechar-modal-btn');
+        const proximaBtn = document.getElementById('proxima-btn');
+        const consultarBtn = document.getElementById('consultar-btn');
+        const fecharPdfBtn = document.getElementById('fechar-pdf-btn');
+
+        // --- Inicialização da Aplicação ---
+        
+        /**
+         * Inicializa o Firebase e a autenticação.
+         */
+        async function inicializarFirebase() {
+            try {
+                // Habilitar logs detalhados do Firestore para depuração
+                setLogLevel('debug'); 
+                
+                const app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+                
+                console.log("Firebase App inicializado.");
+                console.log("App ID:", appId);
+
+                // Gerenciar estado de autenticação
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        console.log("Usuário autenticado:", user.uid);
+                        userId = user.uid;
+                    } else {
+                        console.log("Usuário não autenticado.");
+                        userId = null;
+                        // Tentar login se não estiver logado
+                        autenticarUsuario(); 
+                    }
+                });
+
+                // Se o onAuthStateChanged não pegar imediatamente, forçamos a autenticação
+                if (!auth.currentUser) {
+                    await autenticarUsuario();
+                } else {
+                    userId = auth.currentUser.uid;
+                }
+                
+            } catch (error) {
+                console.error("Erro ao inicializar Firebase:", error);
+                // Tentar login anônimo como fallback
+                if (!auth) {
+                    const app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+                    await signInAnonymously(auth);
+                    userId = auth.currentUser.uid;
+                }
+            }
+        }
+
+        /**
+         * Autentica o usuário, priorizando o token inicial, ou caindo para anônimo.
+         */
+        async function autenticarUsuario() {
+            try {
+                if (initialAuthToken) {
+                    console.log("Autenticando com token customizado...");
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    console.log("Autenticando anonimamente...");
+                    await signInAnonymously(auth);
+                }
+                userId = auth.currentUser.uid;
+                console.log("Autenticação bem-sucedida, UID:", userId);
+            } catch (error) {
+                console.error("Erro durante a autenticação:", error);
+                // Criar um ID de fallback para a sessão
+                if (!userId) {
+                    userId = 'fallback-' + crypto.randomUUID();
+                    console.warn("Usando UID de fallback:", userId);
+                }
+            }
+        }
+
+        /**
+         * Define a data de hoje no campo de data.
+         */
+        function preencherDataAtual() {
+            const dataInput = document.getElementById('data');
+            const hoje = new Date();
+            const offset = hoje.getTimezoneOffset();
+            const dataLocal = new Date(hoje.getTime() - (offset*60*1000));
+            dataInput.value = dataLocal.toISOString().split('T')[0];
+        }
+
+        // --- Lógica do Quiz ---
+        
+        /**
+         * Chamado quando o formulário inicial é enviado.
+         * Salva os dados do aluno e mostra o aviso de segurança.
+         */
+        function handleInicioForm(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value.trim();
+            const colegio = document.getElementById('colegio').value.trim();
+            const data = document.getElementById('data').value;
+
+            if (nome && colegio && data) {
+                infoAluno = {
+                    nome: nome,
+                    colegio: colegio,
+                    data: data,
+                    dataHoraInicio: new Date().toISOString()
+                };
+                
+                // Atualiza os dados do aluno na tela do quiz
+                document.getElementById('nome-aluno-quiz').textContent = infoAluno.nome;
+                document.getElementById('colegio-aluno-quiz').textContent = infoAluno.colegio;
+                
+                // Transição de telas
+                inicioContainer.classList.add('hidden');
+                avisoContainer.classList.remove('hidden');
+            } else {
+                alert("Por favor, preencha todos os campos.");
+            }
+        }
+
+        /**
+         * Inicia o quiz após o aluno aceitar o aviso.
+         */
+        function comecarQuiz() {
+            provaIniciada = true;
+            tentativasSaida = 0;
+            pontuacaoTotal = 0;
+            pontuacaoMaximaPossivel = 0;
+            questaoAtualIndex = 0;
+            respostasAluno = [];
+            
+            sortearQuestoes();
+            mostrarQuestao();
+            
+            // Transição de telas
+            avisoContainer.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+
+            // Ativa os listeners de segurança
+            ativarListenersSeguranca();
+        }
+
+        /**
+         * Sorteia 20 questões do banco, garantindo uma de cada grupo.
+         */
+        function sortearQuestoes() {
+            questoesSorteadas = [];
+            pontuacaoMaximaPossivel = 0;
+            
+            const grupos = new Set(questionBank.map(q => q.grupo));
+            
+            if (grupos.size < 20) {
+                console.error("Banco de questões não tem 20 grupos únicos!");
+                // Fallback: apenas pega 20 questões aleatórias
+                questoesSorteadas = [...questionBank].sort(() => 0.5 - Math.random()).slice(0, 20);
+            } else {
+                // Seleciona 20 grupos aleatoriamente
+                const gruposSorteados = [...grupos].sort(() => 0.5 - Math.random()).slice(0, 20);
+                
+                for (const grupoId of gruposSorteados) {
+                    const questoesDoGrupo = questionBank.filter(q => q.grupo === grupoId);
+                    // Sorteia uma variação dentro do grupo
+                    const questaoSorteada = questoesDoGrupo[Math.floor(Math.random() * questoesDoGrupo.length)];
+                    questoesSorteadas.push(questaoSorteada);
+                }
+            }
+            
+            // Embaralha a ordem final das 20 questões
+            questoesSorteadas.sort(() => 0.5 - Math.random());
+            
+            // Calcula a pontuação máxima
+            pontuacaoMaximaPossivel = questoesSorteadas.reduce((acc, q) => acc + q.pontos, 0);
+            document.getElementById('questao-total-num').textContent = questoesSorteadas.length;
+        }
+
+        /**
+         * Exibe a questão atual na tela.
+         */
+        function mostrarQuestao() {
+            // Limpa o estado da questão anterior
+            alternativaSelecionada = null;
+            proximaBtn.disabled = true;
+            proximaBtn.classList.add('bg-gray-400');
+            proximaBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+            
+            if (questaoAtualIndex >= questoesSorteadas.length) {
+                finalizarProva();
+                return;
+            }
+
+            const questao = questoesSorteadas[questaoAtualIndex];
+            
+            // Atualiza informações da questão
+            document.getElementById('questao-atual-num').textContent = questaoAtualIndex + 1;
+            document.getElementById('texto-questao').textContent = questao.texto;
+            
+            // Mostra a pontuação e nível
+            const pontosQuestaoDiv = document.getElementById('pontos-questao');
+            pontosQuestaoDiv.textContent = `Nível: ${questao.nivel.charAt(0).toUpperCase() + questao.nivel.slice(1)} (${questao.pontos} pontos)`;
+            pontosQuestaoDiv.className = 'text-sm font-medium px-2 py-1 rounded'; // Reset
+            if (questao.nivel === 'facil') {
+                pontosQuestaoDiv.classList.add('bg-green-100', 'text-green-700');
+            } else if (questao.nivel === 'medio') {
+                pontosQuestaoDiv.classList.add('bg-yellow-100', 'text-yellow-700');
+            } else {
+                pontosQuestaoDiv.classList.add('bg-red-100', 'text-red-700');
+            }
+
+            // Embaralha e exibe as alternativas
+            const alternativasContainer = document.getElementById('alternativas-container');
+            alternativasContainer.innerHTML = '';
+            
+            const alternativasEmbaralhadas = [...questao.alternativas].sort(() => 0.5 - Math.random());
+            
+            alternativasEmbaralhadas.forEach(alt => {
+                const altDiv = document.createElement('div');
+                altDiv.className = 'border border-gray-300 rounded-lg p-4 cursor-pointer hover:bg-gray-100 transition-all duration-200';
+                altDiv.textContent = alt.texto;
+                
+                altDiv.addEventListener('click', () => {
+                    // Remove a seleção de outras
+                    Array.from(alternativasContainer.children).forEach(child => {
+                        child.classList.remove('alternativa-selecionada');
+                        child.classList.add('border-gray-300');
+                    });
+                    
+                    // Adiciona seleção a esta
+                    altDiv.classList.add('alternativa-selecionada');
+                    altDiv.classList.remove('border-gray-300');
+                    
+                    alternativaSelecionada = alt;
+                    
+                    // Habilita o botão de próxima
+                    proximaBtn.disabled = false;
+                    proximaBtn.classList.remove('bg-gray-400');
+                    proximaBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                });
+                
+                alternativasContainer.appendChild(altDiv);
+            });
+
+            // Atualiza o texto do botão para a última questão
+            if (questaoAtualIndex === questoesSorteadas.length - 1) {
+                proximaBtn.textContent = 'Finalizar Prova';
+            } else {
+                proximaBtn.textContent = 'Próxima Questão';
+            }
+            
+            // Adiciona animação de fade-in
+            document.getElementById('questao-card').classList.remove('fade-in');
+            void document.getElementById('questao-card').offsetWidth; // Força o reflow para reiniciar a animação
+            document.getElementById('questao-card').classList.add('fade-in');
+        }
+        
+        /**
+         * Processa a resposta e avança para a próxima questão.
+         */
+        function proximaQuestao() {
+            if (!alternativaSelecionada) return;
+
+            const questao = questoesSorteadas[questaoAtualIndex];
+
+            // Calcula pontuação
+            if (alternativaSelecionada.correta) {
+                pontuacaoTotal += questao.pontos;
+            }
+
+            // Salva a resposta do aluno
+            respostasAluno.push({
+                grupo: questao.grupo,
+                id: questao.id,
+                textoQuestao: questao.texto,
+                textoResposta: alternativaSelecionada.texto,
+                correta: alternativaSelecionada.correta,
+                pontosGanhos: alternativaSelecionada.correta ? questao.pontos : 0,
+                pontosPossiveis: questao.pontos
+            });
+
+            // Avança para a próxima questão
+            questaoAtualIndex++;
+            mostrarQuestao();
+        }
+
+        /**
+         * Finaliza a prova, exibe os resultados e salva no Firebase.
+         */
+        async function finalizarProva() {
+            provaIniciada = false;
+            desativarListenersSeguranca();
+
+            // Exibe tela de resultados
+            document.getElementById('nome-aluno-resultado').textContent = infoAluno.nome;
+            document.getElementById('pontuacao-final').textContent = pontuacaoTotal;
+            document.getElementById('pontuacao-maxima').textContent = pontuacaoMaximaPossivel;
+
+            quizContainer.classList.add('hidden');
+            resultadoContainer.classList.remove('hidden');
+
+            const feedbackFirebase = document.getElementById('feedback-firebase');
+            feedbackFirebase.textContent = 'Salvando seu resultado...';
+            
+            // Salva no Firebase
+            try {
+                if (!db || !userId || !appId) {
+                    console.error("Firebase DB, UserID ou AppID não estão prontos.");
+                    throw new Error("Falha na conexão com o banco de dados.");
+                }
+                
+                const resultadoDoc = {
+                    appId: appId,
+                    userId: userId,
+                    aluno: infoAluno,
+                    pontuacao: pontuacaoTotal,
+                    pontuacaoMaxima: pontuacaoMaximaPossivel,
+                    dataHoraFim: new Date().toISOString(),
+                    respostas: respostasAluno,
+                    questoesSorteadas: questoesSorteadas.map(q => q.id) // Salva os IDs das questões
+                };
+
+                // Caminho da coleção pública
+                const collectionPath = `artifacts/${appId}/public/data/resultadosProvas`;
+                
+                // Adiciona um novo documento com ID gerado automaticamente
+                const docRef = await addDoc(collection(db, collectionPath), resultadoDoc);
+                
+                console.log("Resultado salvo com sucesso no Firestore. Doc ID:", docRef.id);
+                feedbackFirebase.textContent = 'Seu resultado foi salvo com sucesso!';
+                feedbackFirebase.classList.add('text-green-600');
+                feedbackFirebase.classList.remove('text-gray-500', 'text-red-600');
+
+            } catch (error) {
+                console.error("Erro ao salvar resultado no Firestore:", error);
+                feedbackFirebase.textContent = 'Erro ao salvar seu resultado. Por favor, tire um print desta tela.';
+                feedbackFirebase.classList.add('text-red-600');
+                feedbackFirebase.classList.remove('text-gray-500', 'text-green-600');
+            }
+        }
+
+        /**
+         * Reinicia a prova, voltando para a tela inicial.
+         */
+        window.reiniciarProva = function() {
+            // Reseta todas as variáveis de estado
+            infoAluno = {};
+            questoesSorteadas = [];
+            questaoAtualIndex = 0;
+            pontuacaoTotal = 0;
+            pontuacaoMaximaPossivel = 0;
+            respostasAluno = [];
+            alternativaSelecionada = null;
+            tentativasSaida = 0;
+            provaIniciada = false;
+
+            // Limpa formulário inicial
+            formInicio.reset();
+            preencherDataAtual();
+
+            // Esconde todas as telas e mostra a inicial
+            inicioContainer.classList.remove('hidden');
+            avisoContainer.classList.add('hidden');
+            quizContainer.classList.add('hidden');
+            resultadoContainer.classList.add('hidden');
+            eliminadoContainer.classList.add('hidden');
+            modalAlerta.classList.add('hidden');
+
+            // Garante que os botões estejam no estado inicial
+            proximaBtn.textContent = 'Próxima Questão';
+            proximaBtn.disabled = true;
+            proximaBtn.classList.add('bg-gray-400');
+            proximaBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+        }
+
+        // --- Lógica de Segurança Anti-Cola ---
+        
+        /**
+         * Função unificada para lidar com ações anormais.
+         */
+        function handleAcaoAnormal(evento) {
+            if (!provaIniciada) return;
+            
+            console.warn(`Ação anormal detectada: ${evento.type}`);
+            
+            tentativasSaida++;
+
+            if (tentativasSaida === 1) {
+                // Primeira ofensa: Mostrar modal de alerta
+                modalAlerta.classList.remove('hidden');
+                // Pausa a prova (embora o JS continue rodando, isso impede o aluno de ver)
+            } else if (tentativasSaida > 1) {
+                // Segunda ofensa: Eliminar
+                eliminarAluno();
+            }
+        }
+
+        /**
+         * Encerra a prova e mostra a tela de eliminação.
+         */
+        function eliminarAluno() {
+            provaIniciada = false;
+            desativarListenersSeguranca();
+
+            // Esconde outras telas e mostra a de eliminação
+            quizContainer.classList.add('hidden');
+            modalAlerta.classList.add('hidden');
+            eliminadoContainer.classList.remove('hidden');
+            
+            // Opcional: Salvar no Firebase que o aluno foi eliminado
+            // (Vou pular isso por enquanto para manter simples)
+        }
+
+        /**
+         * Fecha o modal de alerta e permite que o aluno continue.
+         */
+        function fecharModal() {
+            modalAlerta.classList.add('hidden');
+            // O aluno pode voltar à prova
+        }
+
+        // --- Funções do Modal PDF ---
+        function abrirModalPdf() {
+            isModalPdfOpen = true;
+            modalPdf.classList.remove('hidden');
+        }
+
+        function fecharModalPdf() {
+            isModalPdfOpen = false;
+            modalPdf.classList.add('hidden');
+        }
+
+        // --- Funções dos Listeners ---
+        // (Definidas separadamente para poderem ser removidas)
+        
+        function onVisibilityChange() {
+            if (document.hidden) {
+                handleAcaoAnormal({ type: 'visibilitychange' });
+            }
+        }
+        
+        function onBlur() {
+            // O 'blur' pode ser barulhento, especialmente com o modal
+            // Vamos checar se o modal está visível
+            if (!modalAlerta.classList.contains('hidden') || isModalPdfOpen) {
+                return; // Ignora o blur se o modal de alerta OU o modal do PDF estiverem ativos
+            }
+            // Adiciona um pequeno delay para evitar falsos positivos ao clicar em coisas do navegador
+            setTimeout(() => {
+                if (document.visibilityState === 'visible' && !document.hasFocus()) {
+                   handleAcaoAnormal({ type: 'blur' });
+                }
+            }, 500);
+        }
+
+        function onCopy(event) {
+            handleAcaoAnormal({ type: 'copy' });
+            event.preventDefault(); // Impede a cópia
+        }
+
+        function onFullscreenChange() {
+            if (!document.fullscreenElement) {
+                // Se saiu da tela cheia, conta como ação anormal
+                handleAcaoAnormal({ type: 'fullscreenexit' });
+            }
+        }
+
+        /**
+         * Adiciona todos os listeners de segurança.
+         */
+        function ativarListenersSeguranca() {
+            document.addEventListener('visibilitychange', onVisibilityChange);
+            window.addEventListener('blur', onBlur);
+            document.addEventListener('copy', onCopy);
+            
+            // Monitora a saída da tela cheia
+            document.addEventListener('fullscreenchange', onFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', onFullscreenChange);
+            document.addEventListener('mozfullscreenchange', onFullscreenChange);
+            document.addEventListener('MSFullscreenChange', onFullscreenChange);
+            
+            // Impede o clique direito
+            document.addEventListener('contextmenu', event => event.preventDefault());
+        }
+
+        /**
+         * Remove todos os listeners de segurança.
+         */
+        function desativarListenersSeguranca() {
+            document.removeEventListener('visibilitychange', onVisibilityChange);
+            window.removeEventListener('blur', onBlur);
+            document.removeEventListener('copy', onCopy);
+            
+            document.removeEventListener('fullscreenchange', onFullscreenChange);
+            document.removeEventListener('webkitfullscreenchange', onFullscreenChange);
+            document.removeEventListener('mozfullscreenchange', onFullscreenChange);
+            document.removeEventListener('MSFullscreenChange', onFullscreenChange);
+
+            document.removeEventListener('contextmenu', event => event.preventDefault());
+        }
+
+
+        // --- Event Listeners Iniciais ---
+        formInicio.addEventListener('submit', handleInicioForm);
+        comecarQuizBtn.addEventListener('click', comecarQuiz);
+        fecharModalBtn.addEventListener('click', fecharModal);
+        proximaBtn.addEventListener('click', proximaQuestao);
+        consultarBtn.addEventListener('click', abrirModalPdf);
+        fecharPdfBtn.addEventListener('click', fecharModalPdf);
+
+        // --- Inicialização ao Carregar a Página ---
+        document.addEventListener('DOMContentLoaded', () => {
+            inicializarFirebase();
+            preencherDataAtual();
+            // Garante que o estado inicial esteja limpo
+            reiniciarProva(); 
+        });
+
+    </script>
+    
+</body>
+</html>
