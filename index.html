@@ -88,6 +88,13 @@
                     Iniciar Prova
                 </button>
             </form>
+
+            <!-- Botão de Login do Professor -->
+            <div class="text-center mt-6">
+                <button id="login-professor-btn" class="text-sm text-gray-500 hover:text-blue-600 hover:underline">
+                    Login do Professor
+                </button>
+            </div>
         </div>
 
         <!-- ===== 2. TELA DE AVISO DE SEGURANÇA ===== -->
@@ -184,17 +191,82 @@
             </button>
         </div>
 
+        <!-- ===== 6. TELA DE ADMIN (PROFESSOR) ===== -->
+        <div id="admin-container" class="p-8 md:p-12 fade-in hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold text-indigo-800">Painel do Professor</h1>
+                <button id="admin-voltar-btn" class="text-sm text-gray-600 hover:text-blue-600 hover:underline">
+                    Sair e Voltar ao Início
+                </button>
+            </div>
+            
+            <p class="text-gray-600 mb-6">Aqui você pode consultar os resultados de todos os alunos que finalizaram a avaliação.</p>
+            
+            <div class="space-y-4 sm:space-y-0 sm:flex sm:space-x-4 mb-6">
+                <button id="buscar-notas-btn" class="w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300 text-lg">
+                    Buscar Notas
+                </button>
+                <button id="exportar-csv-btn" class="w-full sm:w-auto bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-green-700 transition-all duration-300 text-lg hidden">
+                    Exportar para CSV (Excel)
+                </button>
+            </div>
+
+            <!-- Tabela de Resultados -->
+            <div id="tabela-container" class="w-full overflow-x-auto">
+                <p id="admin-feedback" class="text-gray-500"></p>
+                <table id="tabela-resultados" class="min-w-full bg-white border border-gray-300 hidden">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Aluno</th>
+                            <th class="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Colégio</th>
+                            <th class="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Data</th>
+                            <th class="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Pontuação</th>
+                            <th class="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">Max</th>
+                            <th class="py-2 px-4 border-b text-left text-sm font-semibold text-gray-700">ID da Prova</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-resultados-body">
+                        <!-- Linhas serão injetadas aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <!-- ===== MODAL DE ALERTA (PRIMEIRA DETECÇÃO) ===== -->
-    <div id="modal-alerta" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50 hidden fade-in">
+    <div id="modal-alerta" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[70] hidden fade-in">
         <div class="bg-white w-full max-w-lg rounded-lg shadow-2xl p-8 text-center">
-            <h2 class="text-3xl font-bold text-yellow-600 mb-4">Alerta!</h2>
-            <p class="text-lg text-gray-700 mb-6">Detectamos uma ação anormal (como sair da aba, minimizar ou tentar copiar). Esta é sua <strong class="font-bold">primeira advertência</strong>.</p>
-            <p class="text-lg text-red-700 font-semibold">Se ocorrer novamente, sua prova será <strong class="underline">ENCERRADA</strong> imediatamente.</p>
+            <h2 class="text-3xl font-bold text-yellow-600 mb-6">Atenção!</h2>
+            <p class="text-lg text-gray-700 mb-4">Detectamos uma ação anormal (como trocar de aba, minimizar ou tentar copiar). Esta é a sua <strong class="font-bold">primeira advertência</strong>.</p>
+            <p class="text-lg text-gray-700 font-semibold">Se ocorrer novamente, a prova será <strong class="text-red-600">automaticamente encerrada</strong>.</p>
             <button id="fechar-modal-btn" class="mt-8 w-full bg-yellow-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-yellow-600 transition-all duration-300 text-lg">
                 Entendido, voltar à prova
             </button>
+        </div>
+    </div>
+
+    <!-- ===== MODAL DE LOGIN PROFESSOR ===== -->
+    <div id="modal-login-professor" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-[70] hidden fade-in">
+        <div class="bg-white w-full max-w-sm rounded-lg shadow-2xl p-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login do Professor</h2>
+            <form id="form-login-professor">
+                <div class="space-y-4">
+                    <div>
+                        <label for="senha-professor" class="block text-sm font-medium text-gray-700">Senha</label>
+                        <input type="password" id="senha-professor" name="senha-professor" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                    </div>
+                    <p id="erro-login-professor" class="text-sm text-red-600 hidden">Senha incorreta. Tente novamente.</p>
+                    <div class="flex space-x-4">
+                        <button type="button" id="cancelar-login-btn" class="w-1/2 bg-gray-200 text-gray-700 font-bold py-3 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="w-1/2 bg-blue-600 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:bg-blue-700 transition-all duration-300">
+                            Entrar
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -225,7 +297,7 @@
         // Importar funções necessárias dos SDKs do Firebase
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, collection, addDoc, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, collection, addDoc, setLogLevel, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // --- Variáveis Globais de Configuração (Fornecidas pelo Ambiente) ---
         
@@ -252,6 +324,7 @@
         let tentativasSaida = 0;
         let provaIniciada = false;
         let isModalPdfOpen = false; // Flag para controlar o modal do PDF
+        let dadosAlunosExport = []; // Array para guardar dados para CSV
 
         // --- Banco de Questões (Baseado no PDF) ---
         // Pelo menos 40 questões (20 grupos de 2 variações)
@@ -626,6 +699,8 @@
         const eliminadoContainer = document.getElementById('eliminado-container');
         const modalAlerta = document.getElementById('modal-alerta');
         const modalPdf = document.getElementById('modal-pdf');
+        const modalLoginProfessor = document.getElementById('modal-login-professor');
+        const adminContainer = document.getElementById('admin-container');
         
         const formInicio = document.getElementById('form-inicio');
         const comecarQuizBtn = document.getElementById('comecar-quiz-btn');
@@ -633,6 +708,16 @@
         const proximaBtn = document.getElementById('proxima-btn');
         const consultarBtn = document.getElementById('consultar-btn');
         const fecharPdfBtn = document.getElementById('fechar-pdf-btn');
+        const loginProfessorBtn = document.getElementById('login-professor-btn');
+        const formLoginProfessor = document.getElementById('form-login-professor');
+        const cancelarLoginBtn = document.getElementById('cancelar-login-btn');
+        const erroLoginProfessor = document.getElementById('erro-login-professor');
+        const buscarNotasBtn = document.getElementById('buscar-notas-btn');
+        const exportarCsvBtn = document.getElementById('exportar-csv-btn');
+        const adminVoltarBtn = document.getElementById('admin-voltar-btn');
+        const adminFeedback = document.getElementById('admin-feedback');
+        const tabelaResultados = document.getElementById('tabela-resultados');
+        const tabelaResultadosBody = document.getElementById('tabela-resultados-body');
 
         // --- Inicialização da Aplicação ---
         
@@ -884,7 +969,7 @@
             void document.getElementById('questao-card').offsetWidth; // Força o reflow para reiniciar a animação
             document.getElementById('questao-card').classList.add('fade-in');
         }
-        
+
         /**
          * Processa a resposta e avança para a próxima questão.
          */
@@ -1001,6 +1086,9 @@
             proximaBtn.disabled = true;
             proximaBtn.classList.add('bg-gray-400');
             proximaBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+
+            // Esconde a tela de admin também
+            adminContainer.classList.add('hidden');
         }
 
         // --- Lógica de Segurança Anti-Cola ---
@@ -1129,6 +1217,156 @@
             document.removeEventListener('contextmenu', event => event.preventDefault());
         }
 
+        // --- Funções do Admin (Professor) ---
+
+        /**
+         * Exibe o modal de login do professor.
+         */
+        function abrirModalLoginProfessor() {
+            erroLoginProfessor.classList.add('hidden');
+            document.getElementById('senha-professor').value = '';
+            modalLoginProfessor.classList.remove('hidden');
+        }
+
+        /**
+         * Fecha o modal de login do professor.
+         */
+        function fecharModalLoginProfessor() {
+            modalLoginProfessor.classList.add('hidden');
+        }
+
+        /**
+         * Valida a senha do professor e exibe o painel de admin.
+         */
+        function handleLoginProfessor(event) {
+            event.preventDefault();
+            const senha = document.getElementById('senha-professor').value;
+
+            if (senha === 'avaliacao#2025') {
+                // Senha correta
+                fecharModalLoginProfessor();
+                inicioContainer.classList.add('hidden');
+                adminContainer.classList.remove('hidden');
+                
+                // Limpa tabela anterior, se houver
+                adminFeedback.textContent = 'Clique em "Buscar Notas" para carregar os resultados.';
+                adminFeedback.classList.remove('hidden');
+                tabelaResultados.classList.add('hidden');
+                tabelaResultadosBody.innerHTML = '';
+                exportarCsvBtn.classList.add('hidden');
+                dadosAlunosExport = [];
+
+            } else {
+                // Senha incorreta
+                erroLoginProfessor.classList.remove('hidden');
+            }
+        }
+
+        /**
+         * Busca todos os resultados do Firestore e exibe na tabela.
+         */
+        async function buscarNotasAlunos() {
+            adminFeedback.textContent = 'Buscando resultados no banco de dados...';
+            adminFeedback.classList.remove('hidden');
+            tabelaResultados.classList.add('hidden');
+            tabelaResultadosBody.innerHTML = '';
+            exportarCsvBtn.classList.add('hidden');
+            dadosAlunosExport = []; // Limpa dados anteriores
+
+            try {
+                if (!db || !appId) {
+                    throw new Error("Conexão com Firebase não estabelecida.");
+                }
+
+                const collectionPath = `artifacts/${appId}/public/data/resultadosProvas`;
+                const q = query(collection(db, collectionPath));
+                const querySnapshot = await getDocs(q);
+
+                if (querySnapshot.empty) {
+                    adminFeedback.textContent = 'Nenhum resultado de aluno encontrado.';
+                    return;
+                }
+
+                let linhasTabela = '';
+                
+                // Prepara dados para exportação CSV (cabeçalho)
+                dadosAlunosExport.push(['ID_Prova', 'Nome_Aluno', 'Colegio', 'Data_Prova', 'Pontuacao', 'Pontuacao_Maxima', 'Data_Inicio', 'Data_Fim']);
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const aluno = data.aluno || {};
+                    
+                    // Adiciona à tabela HTML
+                    linhasTabela += `
+                        <tr class="hover:bg-gray-50">
+                            <td class="py-2 px-4 border-b">${aluno.nome || 'N/A'}</td>
+                            <td class="py-2 px-4 border-b">${aluno.colegio || 'N/A'}</td>
+                            <td class="py-2 px-4 border-b">${aluno.data || 'N/A'}</td>
+                            <td class="py-2 px-4 border-b font-bold text-blue-700">${data.pontuacao}</td>
+                            <td class="py-2 px-4 border-b">${data.pontuacaoMaxima}</td>
+                            <td class="py-2 px-4 border-b text-xs">${doc.id}</td>
+                        </tr>
+                    `;
+                    
+                    // Adiciona aos dados de exportação (limpando vírgulas)
+                    const limpar = (str) => (str || '').replace(/,/g, ''); // Remove vírgulas para CSV
+                    dadosAlunosExport.push([
+                        doc.id,
+                        limpar(aluno.nome),
+                        limpar(aluno.colegio),
+                        aluno.data || 'N/A',
+                        data.pontuacao,
+                        data.pontuacaoMaxima,
+                        aluno.dataHoraInicio || 'N/A',
+                        data.dataHoraFim || 'N/A'
+                    ]);
+                });
+
+                tabelaResultadosBody.innerHTML = linhasTabela;
+                tabelaResultados.classList.remove('hidden');
+                adminFeedback.classList.add('hidden');
+                exportarCsvBtn.classList.remove('hidden');
+
+            } catch (error) {
+                console.error("Erro ao buscar notas:", error);
+                adminFeedback.textContent = `Erro ao buscar dados: ${error.message}`;
+                adminFeedback.classList.add('text-red-600');
+            }
+        }
+
+        /**
+         * Exporta os dados da tabela para um arquivo CSV.
+         */
+        function exportarParaCSV() {
+            if (dadosAlunosExport.length === 0) {
+                alert("Não há dados para exportar. Clique em 'Buscar Notas' primeiro.");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            dadosAlunosExport.forEach(rowArray => {
+               let row = rowArray.join(",");
+               csvContent += row + "\r\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `export_notas_lean_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        /**
+         * Volta da tela de admin para a tela inicial.
+         */
+        function voltarParaInicio() {
+            adminContainer.classList.add('hidden');
+            inicioContainer.classList.remove('hidden');
+        }
+
 
         // --- Event Listeners Iniciais ---
         formInicio.addEventListener('submit', handleInicioForm);
@@ -1137,6 +1375,14 @@
         proximaBtn.addEventListener('click', proximaQuestao);
         consultarBtn.addEventListener('click', abrirModalPdf);
         fecharPdfBtn.addEventListener('click', fecharModalPdf);
+        
+        // Listeners do Admin
+        loginProfessorBtn.addEventListener('click', abrirModalLoginProfessor);
+        cancelarLoginBtn.addEventListener('click', fecharModalLoginProfessor);
+        formLoginProfessor.addEventListener('submit', handleLoginProfessor);
+        adminVoltarBtn.addEventListener('click', voltarParaInicio);
+        buscarNotasBtn.addEventListener('click', buscarNotasAlunos);
+        exportarCsvBtn.addEventListener('click', exportarParaCSV);
 
         // --- Inicialização ao Carregar a Página ---
         document.addEventListener('DOMContentLoaded', () => {
