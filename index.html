@@ -327,367 +327,369 @@
         let dadosAlunosExport = []; // Array para guardar dados para CSV
 
         // --- Banco de Questões (Baseado no PDF) ---
+        // ATUALIZAÇÃO: Estudos de caso mais detalhados e conceitos contextualizados.
         // Pelo menos 40 questões (20 grupos de 2 variações)
-        // ATUALIZADO: 60%+ são estudos de caso e alternativas com tamanho balanceado.
+        // 60%+ são estudos de caso e alternativas com tamanho balanceado.
         const questionBank = [
             // Grupo 1: Definição de Lean (Fácil - Conhecimento)
-            { id: 1.1, grupo: 1, texto: "Qual é a definição mais fundamental da filosofia 'Lean', conforme originada do Sistema Toyota de Produção (TPS)?", 
+            { id: 1.1, grupo: 1, texto: "O 'Lean' é uma filosofia de gestão inspirada no Sistema Toyota de Produção (TPS), desenvolvido em um Japão pós-guerra com escassez de recursos. Qual era o foco principal e radicalmente diferente do TPS em comparação com a produção em massa ocidental?", 
               alternativas: [
-                { texto: "Uma filosofia de gestão focada na eliminação absoluta de desperdícios e na 'economia de fluxo'.", correta: true },
-                { texto: "Um método de produção focado exclusivamente na 'economia de escala' para reduzir o custo unitário.", correta: false },
-                { texto: "Um sistema de controle de qualidade estatístico, conhecido como Six Sigma, focado em variabilidade.", correta: false },
-                { texto: "Uma metodologia de gestão de projetos ágeis para desenvolvimento rápido de software.", correta: false },
-                { texto: "Um programa de organização do local de trabalho baseado nos 5S para manter a limpeza.", correta: false }
+                { texto: "Focar na 'economia de escala', ou seja, produzir o máximo de peças possível para reduzir o custo unitário de cada peça.", correta: false },
+                { texto: "Focar na 'economia de fluxo' e na eliminação sistemática de qualquer atividade que não agregasse valor ao cliente (desperdício).", correta: true },
+                { texto: "Focar na automação total e robótica, substituindo operadores humanos para garantir a máxima velocidade de produção.", correta: false },
+                { texto: "Focar na compra de vastos estoques de matéria-prima para garantir proteção contra a escassez de recursos no Japão.", correta: false },
+                { texto: "Focar no controle estatístico da qualidade (Six Sigma) para reduzir a variabilidade do processo, sendo este o pilar central.", correta: false }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
-            { id: 1.2, grupo: 1, texto: "O Sistema Toyota de Produção (TPS), que deu origem ao Lean, foi desenvolvido em um contexto de escassez. Qual era seu foco principal?",
+            { id: 1.2, grupo: 1, texto: "A filosofia Lean, derivada do Sistema Toyota de Produção (TPS), foi uma resposta à escassez de recursos e capital. A filosofia central de Taiichi Ohno era eliminar desperdícios. Qual é a definição fundamental de 'desperdício' sob esta ótica?",
               alternativas: [
-                { texto: "Focar na 'economia de escala', produzindo o máximo possível para reduzir custos.", correta: false },
-                { texto: "Focar na 'economia de fluxo' e na eliminação de qualquer atividade que não agregasse valor.", correta: true },
-                { texto: "Focar na automação completa das fábricas, eliminando a necessidade de operadores humanos.", correta: false },
-                { texto: "Focar na compra de grandes lotes de matéria-prima para sempre garantir descontos de volume.", correta: false },
-                { texto: "Focar na inspeção de qualidade 100% no final da linha para garantir zero defeitos ao cliente.", correta: false }
+                { texto: "Qualquer atividade que custe mais de um certo valor pré-definido pelo departamento financeiro da empresa.", correta: false },
+                { texto: "Qualquer processo manual que poderia ser automatizado, mesmo que o custo da automação seja extremamente alto.", correta: false },
+                { texto: "Qualquer atividade que consome recursos (tempo, material, espaço) mas que não agrega valor sob a perspectiva do cliente.", correta: true },
+                { texto: "Apenas o material de sucata ou peças defeituosas que são identificados no final da linha de produção pela inspeção.", correta: false },
+                { texto: "A falta de 'economia de escala', ou seja, não produzir em lotes grandes o suficiente para atingir o custo unitário mínimo.", correta: false }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
             
             // Grupo 2: Arquitetos do TPS (Fácil - Conhecimento)
-            { id: 2.1, grupo: 2, texto: "Quem são os dois indivíduos universalmente reconhecidos como os principais arquitetos do Sistema Toyota de Produção (TPS)?", 
+            { id: 2.1, grupo: 2, texto: "O TPS é creditado a dois arquitetos principais. Um foi Taiichi Ohno, o 'pai' da filosofia de eliminação de desperdícios. O outro foi um engenheiro consultor que desenvolveu mecanismos práticos como o Poka-Yoke (à prova de erros) e o SMED (Troca Rápida de Ferramentas). Quem foi esse engenheiro?", 
               alternativas: [
-                { texto: "Taiichi Ohno e Shigeo Shingo.", correta: true },
-                { texto: "James P. Womack e Daniel T. Jones.", correta: false },
-                { texto: "W. Edwards Deming e Henry Ford.", correta: false },
-                { texto: "Eiji Toyoda e Eric Ries.", correta: false },
-                { texto: "Henry Ford e Taiichi Ohno.", correta: false }
+                { texto: "W. Edwards Deming, o estatístico americano que ensinou controle de qualidade e o ciclo PDCA no Japão.", correta: false },
+                { texto: "James P. Womack, o pesquisador do MIT que mais tarde cunhou o termo 'Lean' no Ocidente.", correta: false },
+                { texto: "Eiji Toyoda, o líder executivo da Toyota que deu a visão e o suporte para a criação do sistema.", correta: false },
+                { texto: "Henry Ford, que, embora rival, inspirou Ohno com seu foco original no fluxo de linha contínuo.", correta: false },
+                { texto: "Shigeo Shingo, o engenheiro industrial que tornou a 'produção sem estoque' (JIT) tecnicamente viável.", correta: true }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
-            { id: 2.2, grupo: 2, texto: "Qual dos arquitetos do TPS é creditado pelo desenvolvimento de técnicas práticas como Poka-Yoke (à prova de erros) e SMED (Troca Rápida de Ferramentas)?",
+            { id: 2.2, grupo: 2, texto: "Dois indivíduos são reconhecidos como os principais arquitetos do TPS. Taiichi Ohno é considerado o 'pai' do TPS e o arquiteto dos pilares JIT e Jidoka. Quem foi seu colaborador principal, um consultor famoso por criar ferramentas de engenharia como o Poka-Yoke e o SMED?",
               alternativas: [
-                { texto: "Taiichi Ohno, o pai do TPS e da eliminação de desperdícios.", correta: false },
-                { texto: "Eiji Toyoda, o líder executivo que impulsionou a visão da Toyota.", correta: false },
-                { texto: "Shigeo Shingo, o engenheiro que traduziu a filosofia em mecanismos práticos.", correta: true },
-                { texto: "James P. Womack, o pesquisador do MIT que cunhou o termo 'Lean'.", correta: false },
-                { texto: "W. Edwards Deming, o estatístico que ensinou o controle de qualidade no Japão.", correta: false }
+                { texto: "Shigeo Shingo, que ajudou a traduzir a filosofia de Ohno em mecanismos práticos de engenharia.", correta: true },
+                { texto: "Daniel T. Jones, que, junto com Womack, escreveu 'A Máquina que Mudou o Mundo' e popularizou o Lean.", correta: false },
+                { texto: "Eric Ries, que muito mais tarde adaptou os conceitos do Lean para o mundo das startups de tecnologia.", correta: false },
+                { texto: "W. Edwards Deming, que focou primariamente no controle estatístico da qualidade (PDCA).", correta: false },
+                { texto: "Eiji Toyoda, que foi o gestor e líder da Toyota, mas não o arquiteto de engenharia das ferramentas.", correta: false }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
 
             // Grupo 3: Diferença Lean vs TPS (Médio - Estudo de Caso)
-            { id: 3.1, grupo: 3, texto: "Estudo de Caso: Uma empresa implementa 'Eventos Kaizen' de 5 dias e foca no VSM. Após 6 meses, os processos antigos retornam. Qual pilar do TPS foi provavelmente 'esquecido' ou 'mal compreendido' nesta implementação 'Lean' Ocidental?",
+            { id: 3.1, grupo: 3, texto: "Estudo de Caso: Uma empresa de software europeia decide adotar o 'Lean'. Eles implementam 'Eventos Kaizen' de 3 dias para redesenhar fluxos de trabalho (VSM) e adotam o JIT (Just-in-Time) para gerenciar tarefas. No entanto, a qualidade do código despenca, pois defeitos (bugs) passam rapidamente para o cliente. Qual pilar fundamental do TPS original foi 'amplamente ignorado ou mal compreendido' nesta implementação 'Lean'?",
               alternativas: [
-                { texto: "O pilar Jidoka (qualidade na fonte) e o 'Respeito pelas Pessoas', que são menos tangíveis que as ferramentas.", correta: true },
-                { texto: "O pilar Just-in-Time (JIT), pois a empresa provavelmente manteve seus estoques altos durante os eventos.", correta: false },
-                { texto: "O conceito de 5S, pois a desorganização certamente foi a causa do retorno dos problemas antigos.", correta: false },
-                { texto: "O Mapeamento do Fluxo de Valor (VSM), pois a ferramenta provavelmente foi aplicada incorretamente pela equipe.", correta: false },
-                { texto: "A filosofia do Kaizen, que é estritamente sobre eventos de 5 dias e não sobre a prática diária.", correta: false }
+                { texto: "O pilar Jidoka (autonomação ou qualidade na fonte), que exige parar o processo imediatamente ao detectar um defeito para impedir sua propagação.", correta: true },
+                { texto: "O Mapeamento do Fluxo de Valor (VSM), pois a ferramenta claramente não foi capaz de identificar os gargalos no fluxo de código.", correta: false },
+                { texto: "O conceito de 5S (Organização), pois os programadores provavelmente estavam com suas áreas de trabalho digitais desorganizadas.", correta: false },
+                { texto: "O pilar JIT (Just-in-Time), pois a empresa o adotou, mas deveria ter focado em um sistema 'Push' (empurrado) para software.", correta: false },
+                { texto: "A filosofia de 'Respeito pelas Pessoas', pois os gerentes provavelmente não respeitaram os programadores durante os eventos.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
-            { id: 3.2, grupo: 3, texto: "Estudo de Caso: Uma montadora concorrente da Toyota decide adotar o 'Lean'. A diretoria se recusa a chamar o programa de 'Sistema Toyota'. Por que o termo 'Lean', cunhado por Womack, foi uma 'necessidade de tradução cultural'?",
+            { id: 3.2, grupo: 3, texto: "Estudo de Caso: O livro 'A Máquina que Mudou o Mundo' (1990) introduziu o termo 'Lean' para descrever o Sistema Toyota de Produção (TPS). Por que foi necessário criar um termo genérico ('Lean') em vez de simplesmente chamar o sistema de 'TPS' no Ocidente?",
               alternativas: [
-                { texto: "Porque o 'Lean' era uma tradução literal dos manuais do TPS para o inglês, facilitando a leitura.", correta: false },
-                { texto: "Porque o 'Lean' removeu os conceitos japoneses de 'Muda' e 'Mura', focando apenas em 'Muri'.", correta: false },
-                { texto: "Porque era comercial e politicamente inviável para concorrentes (como a Ford) adotarem o 'Sistema Toyota' de um rival.", correta: true },
-                { texto: "Porque a Toyota patenteou o termo 'TPS', forçando o Ocidente a criar um novo nome para o mesmo sistema.", correta: false },
-                { texto: "Porque o 'Lean' era focado em hospitais e bancos, enquanto o TPS era apenas para carros, necessitando um nome novo.", correta: false }
+                { texto: "Porque o termo 'Lean' era uma tradução literal e exata da palavra japonesa 'Kaizen', facilitando a compreensão.", correta: false },
+                { texto: "Porque o TPS era focado exclusivamente em fabricação de carros, e o 'Lean' foi criado para ser aplicado apenas em hospitais e bancos.", correta: false },
+                { texto: "Porque a Toyota proibiu o uso do termo 'TPS' por qualquer outra empresa, forçando o MIT a inventar um novo nome.", correta: false },
+                { texto: "Foi uma 'necessidade de tradução cultural' para desvincular a filosofia da Toyota, permitindo que concorrentes (como a GM) a adotassem sem parecer que estavam copiando um rival.", correta: true },
+                { texto: "Porque o 'Lean' é fundamentalmente diferente, pois foca no Six Sigma e estatística, enquanto o TPS foca apenas em ferramentas visuais.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Compreensão' },
 
-            // Grupo 4: 3M (Muda, Mura, Muri) (Médio - Estudo de Caso)
-            { id: 4.1, grupo: 4, texto: "Estudo de Caso: Um centro de distribuição tem dias de 1000 pedidos (Mura) e dias de 200. Nos dias de pico, os operadores trabalham freneticamente (Muri) e cometem erros de envio (Muda). Qual é a causa raiz que o Lean atacaria primeiro?",
+            // Grupo 4: 3M (Muda, Mura, Muri) (Difícil - Estudo de Caso)
+            { id: 4.1, grupo: 4, texto: "Estudo de Caso: Uma transportadora opera com alta 'Mura' (irregularidade), recebendo 5.000 pacotes às segundas e apenas 1.000 às sextas. Para 'dar conta do recado' nas segundas, a gestão força os operadores a trabalhar em ritmo frenético, sem pausas ('Muri', sobrecarga). Isso resulta em pacotes danificados e erros de envio ('Muda', desperdício). Qual é a interconexão causal que o Lean buscaria resolver na raiz?",
               alternativas: [
-                { texto: "O Muri (sobrecarga), contratando mais pessoas para os dias de pico e mantendo-as ociosas nos dias de vale.", correta: false },
-                { texto: "O Muda (erros), implementando um sistema de inspeção tripla no final do processo para corrigir os envios.", correta: false },
-                { texto: "O Mura (irregularidade), tentando nivelar a demanda (Heijunka) ou o processamento para estabilizar o fluxo.", correta: true },
-                { texto: "O Muda (erros), treinando os operadores para serem mais cuidadosos mesmo sob pressão (Muri).", correta: false },
-                { texto: "O Muri (sobrecarga), investindo em robôs caros para substituir os operadores que cometem erros.", correta: false }
-              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
-            { id: 4.2, grupo: 4, texto: "Analisando os 3M (Muda, Mura, Muri), qual é a interconexão causal correta que explica por que 'caçar o desperdício' (Muda) isoladamente falha?",
+                { texto: "Atacar o 'Muda' (erros) primeiro, implementando uma estação de inspeção tripla no final do processo para corrigir os envios.", correta: false },
+                { texto: "Atacar o 'Muri' (sobrecarga) primeiro, contratando o triplo de funcionários apenas para as segundas-feiras, mesmo que fiquem ociosos.", correta: false },
+                { texto: "Atacar a 'Mura' (irregularidade) primeiro, tentando nivelar o fluxo de pacotes (Heijunka) ao longo da semana para estabilizar o processo.", correta: true },
+                { texto: "Atacar o 'Muda' (danos) primeiro, investindo em embalagens mais caras e robustas para que resistam ao ritmo frenético.", correta: false },
+                { texto: "Atacar o 'Muri' (sobrecarga) primeiro, aplicando o 5S para organizar a área, o que fará os operadores trabalharem mais rápido.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Análise' },
+            { id: 4.2, grupo: 4, texto: "Estudo de Caso: Um hospital sofre com 'Mura' (irregularidade) na triagem, com picos de pacientes às 10h e vales às 15h. Durante os picos, enfermeiros correm freneticamente ('Muri', sobrecarga), levando a erros de registro ('Muda', defeitos) e longas filas ('Muda', espera). A maioria das iniciativas foca em 'caçar o desperdício' (Muda). Por que essa abordagem falha em resolver o problema sistêmico?",
               alternativas: [
-                { texto: "Muda (desperdício) é a causa raiz que leva a Muri (sobrecarga) e Mura (irregularidade) no sistema.", correta: false },
-                { texto: "Muri (sobrecarga) é a causa raiz, pois força os operadores a criar irregularidades (Mura) e desperdícios (Muda).", correta: false },
-                { texto: "Mura (irregularidade) é a causa raiz, que leva a gestão a criar Muri (sobrecarga) para compensar, gerando Muda (desperdício).", correta: true },
-                { texto: "Os 3M são conceitos independentes; um verdadeiro praticante Lean ataca todos os três ao mesmo tempo, sem prioridade.", correta: false },
-                { texto: "Muda, Mura e Muri são apenas três palavras diferentes para o mesmo problema, que é o excesso de estoque.", correta: false }
-              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
+                { texto: "Porque o 'Muda' (erros) é o sintoma visível, mas a causa raiz é a 'Mura' (irregularidade) que força o 'Muri' (sobrecarga).", correta: true },
+                { texto: "Porque o 'Muda' (erros) só pode ser resolvido com mais treinamento, independentemente da irregularidade (Mura) ou sobrecarga (Muri).", correta: false },
+                { texto: "Porque o 'Muri' (sobrecarga) é a verdadeira causa raiz, e o hospital deveria proibir os picos de pacientes às 10h.", correta: false },
+                { texto: "Porque os 3M (Muda, Mura, Muri) são conceitos totalmente independentes e não possuem uma relação causal entre si.", correta: false },
+                { texto: "Porque o 'Muda' (espera) é a causa raiz de todos os outros problemas, e o hospital deveria focar apenas em reduzir as filas.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Análise' },
 
             // Grupo 5: Muri (Fácil - Conhecimento)
-            { id: 5.1, grupo: 5, texto: "No contexto dos 3M, o que significa 'Muri'?",
+            { id: 5.1, grupo: 5, texto: "A filosofia Lean busca eliminar os '3M'. O 'Muda' é o desperdício e o 'Mura' é a irregularidade. O que significa 'Muri' e qual é um exemplo clássico disso em um processo?",
               alternativas: [
-                { texto: "Irregularidade ou variabilidade no processo, como picos e vales de demanda.", correta: false },
-                { texto: "Qualquer atividade que consome recursos mas não agrega valor ao cliente (desperdício).", correta: false },
-                { texto: "Sobrecarga de pessoas, equipamentos ou sistemas, exigindo que operem além da capacidade razoável.", correta: true },
-                { texto: "Um tipo de cartão visual utilizado no sistema de produção puxada para sinalizar a reposição.", correta: false },
-                { texto: "A filosofia de melhoria contínua incremental realizada por todos na organização.", correta: false }
+                { texto: "Significa 'melhoria' e é exemplificado por um 'Evento Kaizen' que melhora um processo.", correta: false },
+                { texto: "Significa 'qualidade' e é exemplificado por um sistema 'Jidoka' que para a linha.", correta: false },
+                { texto: "Significa 'sobrecarga' e é exemplificado por exigir que máquinas operem 100% do tempo sem manutenção.", correta: true },
+                { texto: "Significa 'fluxo' e é exemplificado por um 'sistema puxado' (Pull) que usa Kanban.", correta: false },
+                { texto: "Significa 'variabilidade' e é exemplificado por picos e vales inesperados na demanda do cliente.", correta: false }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
-            { id: 5.2, grupo: 5, texto: "Operadores trabalhando em ritmo frenético, máquinas operando 100% do tempo sem manutenção, ou funcionários sobrecarregados mentalmente são exemplos de qual dos 3M?",
+            { id: 5.2, grupo: 5, texto: "Os '3M' são os inimigos do Lean. Se 'Muda' é desperdício (ex: espera) e 'Mura' é irregularidade (ex: volumes de produção inconsistentes), o que é 'Muri'?",
               alternativas: [
-                { texto: "Muda (Desperdício de Habilidades)", correta: false },
-                { texto: "Mura (Irregularidade)", correta: false },
-                { texto: "Muri (Sobrecarga)", correta: true },
-                { texto: "Kaizen (Melhoria)", correta: false },
-                { texto: "Jidoka (Autonomação)", correta: false }
+                { texto: "A sobrecarga de pessoas ou equipamentos, exigindo que operem além de sua capacidade sustentável.", correta: true },
+                { texto: "O ato de inspecionar a qualidade no final do processo, em vez de na fonte (Jidoka).", correta: false },
+                { texto: "O cartão visual (Kanban) que é usado para sinalizar a produção em um sistema puxado.", correta: false },
+                { texto: "O desperdício de talento, que é o oitavo desperdício do 'Muda' (Habilidades Não Utilizadas).", correta: false },
+                { texto: "O método científico (PDCA) usado para implementar o Kaizen (melhoria contínua).", correta: false }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
             
             // Grupo 6: Pior Desperdício (Superprodução) (Médio - Estudo de Caso)
-            { id: 6.1, grupo: 6, texto: "Estudo de Caso: Uma gráfica imprime 10.000 folhetos com base em uma previsão (Push), mas o cliente só precisa de 1.000 por mês. Este ato é considerado o 'pior dos desperdícios'. Por quê?",
+            { id: 6.1, grupo: 6, texto: "Estudo de Caso: Uma fábrica de calçados, operando em um sistema 'Empurrado' (Push), decide produzir 50.000 pares de botas de inverno em pleno verão, baseando-se em uma previsão de vendas. Por que a 'Superprodução' (produzir mais, mais cedo ou mais rápido do que o necessário) é considerada o 'pior dos desperdícios'?",
               alternativas: [
-                { texto: "Porque a superprodução é a causa de muitos outros desperdícios (gera Estoque, Transporte e esconde Defeitos).", correta: true },
-                { texto: "Porque o custo do papel (Defeito) é o maior custo individual, superando todos os outros desperdícios.", correta: false },
-                { texto: "Porque o 'Movimento' dos operadores para carregar tanto papel é o principal risco de segurança na gráfica.", correta: false },
-                { texto: "Porque a 'Espera' do cliente pelo primeiro lote de 1.000 folhetos foi provavelmente muito longa.", correta: false },
-                { texto: "Porque o 'Processamento Excessivo' (usar tinta cara) é sempre o principal problema em gráficas.", correta: false }
+                { texto: "Porque ela é a causa direta de muitos outros desperdícios: gera 'Estoque' (Muda), que exige 'Transporte' (Muda) e esconde 'Defeitos' (Muda).", correta: true },
+                { texto: "Porque o custo do 'Movimento' (Muda) dos operadores para fabricar tantas botas é o maior custo isolado da fábrica.", correta: false },
+                { texto: "Porque o 'Processamento Excessivo' (Muda), como polir as botas mais do que o cliente valoriza, é o verdadeiro problema.", correta: false },
+                { texto: "Porque a 'Espera' (Muda) das máquinas entre os lotes de produção é o maior gargalo, e a superprodução ajuda a reduzir isso.", correta: false },
+                { texto: "Porque o 'Talento Não Utilizado' (Muda) é o pior desperdício, pois os operadores poderiam estar pensando em novos designs.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
-            { id: 6.2, grupo: 6, texto: "Produzir mais, mais cedo ou mais rápido do que o próximo processo (ou o cliente final) necessita, é a definição de qual desperdício?",
+            { id: 6.2, grupo: 6, texto: "Estudo de Caso: Uma padaria decide assar 200 pães às 5h da manhã, baseando-se em uma previsão (Push), antes que qualquer cliente chegue. No final do dia, 80 pães não vendidos são descartados. Este é um exemplo clássico de 'Superprodução'. Por que este desperdício é considerado o mais grave pelo TPS?",
               alternativas: [
-                { texto: "Processamento Excessivo (Overprocessing)", correta: false },
-                { texto: "Superprodução (Overproduction)", correta: true },
-                { texto: "Inventário (Inventory)", correta: false },
-                { texto: "Transporte (Transportation)", correta: false },
-                { texto: "Defeitos (Defects)", correta: false }
-              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+                { texto: "Porque ele mascara problemas. Se a padaria fizesse 200 pães e a máquina quebrasse, ninguém notaria por causa do estoque.", correta: false },
+                { texto: "Porque ele causa outros desperdícios. Os 200 pães geram 'Estoque', ocupam espaço e, se estragam, viram 'Defeitos'.", correta: true },
+                { texto: "Porque o 'Movimento' do padeiro para mover 200 pães é o maior desperdício de tempo no processo.", correta: false },
+                { texto: "Porque o 'Processamento Excessivo' (deixar o pão muito bonito) é mais caro do que o custo do pão em si.", correta: false },
+                { texto: "Porque a 'Espera' do cliente pelo pão é o pior desperdício, e a superprodução garante que o cliente nunca espere.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
 
             // Grupo 7: 8º Desperdício (Talento) (Médio - Estudo de Caso)
-            { id: 7.1, grupo: 7, texto: "Estudo de Caso: Um gerente de chão de fábrica implementa um novo procedimento e ignora as sugestões de melhoria dos operadores, que conhecem a máquina há 10 anos. Qual dos 8 desperdícios está sendo cometido?",
+            { id: 7.1, grupo: 7, texto: "Estudo de Caso: Em um 'Evento Kaizen', a gestão de um hospital redesenha o layout da farmácia sem consultar os técnicos que trabalham lá há anos. O novo layout, embora bonito, é impraticável. A gestão cometeu qual dos 8 desperdícios (Muda)?",
               alternativas: [
-                { texto: "Processamento Excessivo, pois o gerente está adicionando burocracia desnecessária.", correta: false },
-                { texto: "Movimento, pois o gerente teve que caminhar até a linha de produção para falar.", correta: false },
-                { texto: "Habilidades Não Utilizadas (Talento), pois o potencial intelectual da equipe está sendo subaproveitado.", correta: true },
-                { texto: "Espera, pois os operadores tiveram que parar para ouvir o gerente falar sobre o procedimento.", correta: false },
-                { texto: "Defeitos, pois o novo procedimento do gerente provavelmente causará erros na produção.", correta: false }
+                { texto: "O desperdício de 'Transporte', pois os medicamentos agora precisam ser transportados por um caminho mais longo.", correta: false },
+                { texto: "O desperdício de 'Habilidades Não Utilizadas' (Talento), pois subaproveitou o conhecimento e a criatividade da equipe da linha de frente.", correta: true },
+                { texto: "O desperdício de 'Movimento', pois os técnicos agora precisam caminhar mais para pegar os medicamentos.", correta: false },
+                { texto: "O desperdício de 'Processamento Excessivo', pois o novo layout provavelmente custou muito caro para ser implementado.", correta: false },
+                { texto: "O desperdício de 'Defeitos', pois o novo layout é um erro de design que precisará de retrabalho.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
-            { id: 7.2, grupo: 7, texto: "Estudo de Caso: Uma enfermeira altamente qualificada passa 30% do seu dia preenchendo formulários manualmente e procurando equipamentos. Qual dos 8 desperdícios se destaca em relação ao seu potencial?",
+            { id: 7.2, grupo: 7, texto: "Estudo de Caso: Uma empresa de engenharia contrata um engenheiro sênior com PhD, mas o aloca para preencher planilhas e agendar reuniões, tarefas que poderiam ser automatizadas ou delegadas. Qual dos 8 desperdícios (Muda) está sendo cometido?",
               alternativas: [
-                { texto: "Habilidades Não Utilizadas (Talento), pois seu conhecimento médico é desperdiçado em tarefas de baixo valor.", correta: true },
-                { texto: "Muri (Sobrecarga), pois ela está claramente sobrecarregada, embora esta não seja a melhor resposta.", correta: false },
-                { texto: "Poka-Yoke, pois o hospital deveria ter um sistema à prova de erros para formulários.", correta: false },
-                { texto: "Superprodução, pois ela está provavelmente preenchendo mais formulários do que o necessário.", correta: false },
-                { texto: "Estoque, pois os formulários preenchidos representam um inventário de informações.", correta: false }
+                { texto: "O desperdício de 'Processamento Excessivo', pois pagar um PhD para agendar reuniões é mais caro do que o necessário.", correta: false },
+                { texto: "O desperdício de 'Espera', pois o engenheiro provavelmente está esperando por tarefas mais desafiadoras.", correta: false },
+                { texto: "O desperdício de 'Habilidades Não Utilizadas' (Talento), pois o potencial intelectual e criativo do colaborador está sendo subaproveitado.", correta: true },
+                { texto: "O desperdício de 'Defeitos', pois o engenheiro sênior provavelmente cometerá erros ao agendar as reuniões.", correta: false },
+                { texto: "O desperdício de 'Superprodução', pois o engenheiro está produzindo mais agendamentos de reunião do que o necessário.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
 
             // Grupo 8: 5 Princípios (Fácil - Conhecimento)
-            { id: 8.1, grupo: 8, texto: "Qual é a sequência correta dos 5 Princípios do Lean Thinking, conforme definidos por Womack e Jones, que serve como uma 'receita' para a transformação?",
+            { id: 8.1, grupo: 8, texto: "Womack & Jones definiram uma 'receita' de 5 princípios sequenciais para a transformação Lean. O primeiro é 'Valor'. Qual é a sequência correta dos quatro princípios restantes?",
               alternativas: [
-                { texto: "1. Valor, 2. Fluxo, 3. Mapeamento do Fluxo de Valor, 4. Puxar, 5. Perfeição.", correta: false },
-                { texto: "1. Valor, 2. Mapeamento do Fluxo de Valor, 3. Fluxo, 4. Puxar, 5. Perfeição.", correta: true },
-                { texto: "1. Puxar, 2. Fluxo, 3. Valor, 4. Mapeamento do Fluxo de Valor, 5. Perfeição.", correta: false },
-                { texto: "1. Perfeição, 2. Valor, 3. Fluxo, 4. Puxar, 5. Mapeamento do Fluxo de Valor.", correta: false },
-                { texto: "1. Valor, 2. Mapeamento do Fluxo de Valor, 3. Puxar, 4. Fluxo, 5. Perfeição.", correta: false }
+                { texto: "2. Fluxo, 3. Puxar, 4. Mapeamento do Fluxo de Valor, 5. Perfeição.", correta: false },
+                { texto: "2. Mapeamento do Fluxo de Valor, 3. Fluxo, 4. Puxar, 5. Perfeição.", correta: true },
+                { texto: "2. Mapeamento do Fluxo de Valor, 3. Puxar, 4. Fluxo, 5. Perfeição.", correta: false },
+                { texto: "2. Puxar, 3. Fluxo, 4. Perfeição, 5. Mapeamento do Fluxo de Valor.", correta: false },
+                { texto: "2. Perfeição, 3. Fluxo, 4. Puxar, 5. Mapeamento do Fluxo de Valor.", correta: false }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
-            { id: 8.2, grupo: 8, texto: "Segundo Womack e Jones, o primeiro passo (Princípio 1) de qualquer transformação Lean é 'Especificar o Valor'. Sob qual perspectiva o Valor deve ser definido?",
+            { id: 8.2, grupo: 8, texto: "Os 5 Princípios do Lean Thinking (Womack & Jones) são o framework prescritivo para a transformação. O primeiro passo é 'Especificar o Valor'. O segundo é 'Mapear o Fluxo de Valor'. Qual é o terceiro princípio, que é o oposto da produção em lotes?",
               alternativas: [
-                { texto: "Da perspectiva da engenharia, que define as especificações técnicas mais robustas.", correta: false },
-                { texto: "Da perspectiva da gestão, que define o menor custo de produção possível para a empresa.", correta: false },
-                { texto: "Unicamente da perspectiva do cliente final, definindo o que ele realmente está disposto a pagar.", correta: true },
-                { texto: "Da perspectiva do marketing, que define quais recursos adicionais podem ser incluídos no produto.", correta: false },
-                { texto: "Da perspectiva do financeiro, que define a margem de lucro esperada para cada produto.", correta: false }
+                { texto: "Puxar (Produção Puxada)", correta: false },
+                { texto: "Perfeição (Kaizen)", correta: false },
+                { texto: "Fluxo (Fluxo Contínuo)", correta: true },
+                { texto: "Jidoka (Autonomação)", correta: false },
+                { texto: "Muda (Eliminar Desperdício)", correta: false }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
 
             // Grupo 9: VSM (Médio - Estudo de Caso)
-            { id: 9.1, grupo: 9, texto: "Estudo de Caso: Uma equipe mapeia um processo (Estado Atual VSM) e descobre que o tempo de agregação de valor (VA) é de 30 minutos, mas o Lead Time total é de 15 dias. O que um VSM revela que um fluxograma simples não mostraria?",
+            { id: 9.1, grupo: 9, texto: "Estudo de Caso: Uma equipe de Lean Office usa o Mapeamento do Fluxo de Valor (VSM), uma ferramenta de diagnóstico, para analisar o processo de integração de novos funcionários. Eles descobrem que o processo leva 20 dias (Lead Time), mas o tempo real de trabalho (Tempo de Agregação de Valor, ou VA) é de apenas 3 horas. O que o VSM torna visível que um fluxograma comum não mostraria?",
               alternativas: [
-                { texto: "O VSM foca apenas no fluxo de informação, enquanto o fluxograma foca no fluxo de material.", correta: false },
-                { texto: "O VSM quantifica o tempo de VA vs. NVA (Não Agrega Valor) e mapeia o fluxo de informação (pedidos) junto com o de material.", correta: true },
-                { texto: "O VSM mostra apenas a sequência de tarefas, sem coletar dados de tempo ou estoque.", correta: false },
-                { texto: "O VSM é usado apenas para o 'Estado Futuro', enquanto o fluxograma é usado para o 'Estado Atual'.", correta: false },
-                { texto: "O VSM é uma ferramenta de 5S para organizar o local de trabalho, não para mapear processos.", correta: false }
+                { texto: "O VSM mostra apenas a sequência de tarefas (ex: 'Preencher Formulário', 'Treinamento'), sem dados de tempo.", correta: false },
+                { texto: "O VSM foca apenas no fluxo de informação (e-mails) e ignora completamente o fluxo de material (crachás).", correta: false },
+                { texto: "O VSM quantifica o tempo de VA (3h) vs. NVA (Não Agrega Valor), revelando que 99% do tempo é desperdício (Espera, Estoque).", correta: true },
+                { texto: "O VSM é usado apenas para projetar o 'Estado Futuro' ideal, e não serve para analisar o 'Estado Atual'.", correta: false },
+                { texto: "O VSM é uma ferramenta de 5S usada para organizar a mesa do novo funcionário, não para mapear o fluxo.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
-            { id: 9.2, grupo: 9, texto: "Estudo de Caso: Após mapear o 'Estado Atual' (15 dias de Lead Time), a equipe projeta um 'Estado Futuro' (2 dias de Lead Time). O que este 'Estado Futuro' provavelmente incluiria?",
+            { id: 9.2, grupo: 9, texto: "Estudo de Caso: Ao usar o Mapeamento do Fluxo de Valor (VSM), uma ferramenta que mapeia tanto o fluxo de material quanto o de informação, uma fábrica descobre que seu 'Estado Atual' tem 10 dias de Lead Time. A equipe projeta um 'Estado Futuro' que elimina gargalos. Quais princípios Lean são tipicamente incorporados neste novo mapa?",
               alternativas: [
-                { texto: "A adição de mais inspeções e aprovações para garantir que os 30 minutos de VA sejam perfeitos.", correta: false },
-                { texto: "A manutenção do sistema 'Empurrado' (Push), mas com uma previsão de demanda muito mais precisa.", correta: false },
-                { texto: "A implementação de fluxo contínuo e produção puxada (Pull) para eliminar os desperdícios de Espera e Estoque.", correta: true },
-                { texto: "A automação de todas as etapas, independentemente do custo, para acelerar o processo.", correta: false },
-                { texto: "O aumento do estoque intermediário para garantir que a próxima etapa nunca precise esperar por material.", correta: false }
+                { texto: "Aumento da produção em lotes e um sistema 'Empurrado' (Push) baseado em previsões mais precisas.", correta: false },
+                { texto: "Implementação de fluxo contínuo (ou 'one-piece flow') e um sistema de produção 'Puxada' (Pull), como o Kanban.", correta: true },
+                { texto: "Aumento dos estoques de segurança (WIP) entre cada etapa para garantir que as máquinas nunca parem.", correta: false },
+                { texto: "Adição de mais estações de inspeção de qualidade no final do processo para capturar todos os defeitos.", correta: false },
+                { texto: "Foco exclusivo no 5S (Organização), assumindo que um local de trabalho limpo automaticamente cria fluxo.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
 
-            // Grupo 10: Fluxo Contínuo vs. Lotes (Médio - Estudo de Caso)
-            { id: 10.1, grupo: 10, texto: "Estudo de Caso: Uma pizzaria opera em 'lotes': ela espera acumular 10 pedidos de pepperoni (Estoque) para depois assar todos juntos. Isso gera 'Espera' para os clientes. Qual princípio Lean essa pizzaria está quebrando?",
+            // Grupo 10: Fluxo Contínuo vs. Lotes (Difícil - Estudo de Caso)
+            { id: 10.1, grupo: 10, texto: "Estudo de Caso: Uma lavanderia industrial opera em 'lotes'. A Etapa 1 (Lavar) processa 100kg de roupa. A Etapa 2 (Secar) tem capacidade para 50kg. A Etapa 3 (Dobrar) é manual. Isso cria 'Espera' (roupas lavadas esperando a secadora) e 'Estoque' (roupas secas esperando para dobrar). Como o Princípio do 'Fluxo Contínuo' (one-piece flow) abordaria isso?",
               alternativas: [
-                { texto: "O Princípio do Fluxo Contínuo (one-piece flow), que buscaria fazer um pedido de cada vez suavemente.", correta: true },
-                { texto: "O Princípio do Valor, pois os clientes claramente não valorizam o pepperoni, preferindo outros sabores.", correta: false },
-                { texto: "O Princípio da Perfeição (Kaizen), pois a pizzaria nunca tenta melhorar seus processos.", correta: false },
-                { texto: "O pilar Jidoka, pois não há um sistema para parar a produção se uma pizza queimar no forno.", correta: false },
-                { texto: "O pilar TPM, pois os fornos provavelmente não estão recebendo a manutenção adequada.", correta: false }
-              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
-            { id: 10.2, grupo: 10, texto: "O 'Fluxo Contínuo' (Princípio 3) é o oposto direto da produção em lotes. Qual é o ideal que ele busca alcançar no processo de produção?",
+                { texto: "O Fluxo Contínuo aumentaria o tamanho dos lotes, comprando uma lavadora de 200kg para maximizar a eficiência da Etapa 1.", correta: false },
+                { texto: "O Fluxo Contínuo buscaria quebrar os lotes, idealmente movendo pequenos volumes (ou 'uma peça por vez') suavemente entre as etapas, balanceando o fluxo.", correta: true },
+                { texto: "O Fluxo Contínuo focaria apenas em acelerar a Etapa 1 (Lavar), pois ela é o início do processo e define o ritmo.", correta: false },
+                { texto: "O Fluxo Contínuo é o mesmo que 'Sistema Empurrado' (Push), então ele criaria uma previsão de demanda de roupas para a semana.", correta: false },
+                { texto: "O Fluxo Contínuo adicionaria mais máquinas de secar (Etapa 2) para que elas fiquem ociosas, prontas para o lote de 100kg.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Aplicação' },
+            { id: 10.2, grupo: 10, texto: "Estudo de Caso: Uma clínica de vacinação processa pacientes em grandes 'lotes'. 30 pacientes chegam às 9h, preenchem formulários (Lote 1), depois todos esperam pela triagem (Lote 2), e depois todos esperam pela aplicação (Lote 3), gerando longas 'Esperas'. O Princípio 3 do Lean é o 'Fluxo Contínuo'. Como ele mudaria essa clínica?",
               alternativas: [
-                { texto: "O ideal de 'fluxo de uma peça por vez' (one-piece flow), movendo-se suavemente entre as etapas sem paradas.", correta: true },
-                { texto: "O ideal de 'inspeção 100%', onde cada peça é verificada em massa no final da linha de produção.", correta: false },
-                { texto: "O ideal de 'grandes lotes econômicos', que maximiza a utilização de cada máquina individualmente.", correta: false },
-                { texto: "O ideal de 'estoque de segurança', que protege o sistema contra qualquer tipo de falha ou variabilidade.", correta: false },
-                { texto: "O ideal de 'sistema empurrado' (push), onde a produção é baseada em uma previsão de demanda precisa.", correta: false }
-              ], nivel: 'facil', pontos: 3, bloom: 'Compreensão' },
+                { texto: "Ele focaria em criar um 'fluxo de uma peça por vez' (one-patient flow), onde o Paciente 1 completaria todas as etapas (Formulário, Triagem, Aplicação) antes do Paciente 2 começar.", correta: false },
+                { texto: "Ele agendaria todos os 30 pacientes para as 9h, mas contrataria 30 enfermeiras para que todos fossem atendidos em um único grande lote.", correta: false },
+                { texto: "Ele buscaria um fluxo suave e contínuo, talvez agendando 2 pacientes a cada 5 minutos e fazendo-os passar pelas etapas sem paradas ou acúmulo de lotes.", correta: true },
+                { texto: "Ele eliminaria a etapa de 'Triagem' (NVA), pois ela é um desperdício de Processamento Excessivo, e enviaria todos direto para a aplicação.", correta: false },
+                { texto: "Ele manteria os lotes, mas aplicaria o 5S (Organização) na sala de espera para que os pacientes ficassem mais confortáveis.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Aplicação' },
             
             // Grupo 11: Sistema Puxado (Pull) (Médio - Estudo de Caso)
-            { id: 11.1, grupo: 11, texto: "Estudo de Caso: Em um supermercado, quando você 'puxa' (compra) um iogurte da prateleira, o sistema sinaliza para o estoque repor aquele item. O que é o oposto disso, conhecido como sistema 'Empurrado' (Push)?",
+            { id: 11.1, grupo: 11, texto: "Estudo de Caso: Uma montadora opera em um 'Sistema Empurrado' (Push). Ela fabrica 1.000 motores com base em uma previsão e os 'empurra' para a linha de montagem, que só precisava de 200. O resultado é um enorme 'Estoque'. Qual é a lógica oposta, o 'Sistema Puxado' (Pull System), o Princípio 4 do Lean?",
               alternativas: [
-                { texto: "Um sistema 'Push' é quando o laticínio 'empurra' 500 iogurtes para o supermercado com base em uma previsão, independente da demanda real.", correta: true },
-                { texto: "Um sistema 'Push' é quando o cliente 'empurra' o carrinho pelo corredor, em vez de 'puxar' o iogurte.", correta: false },
-                { texto: "Um sistema 'Push' é quando o cliente avisa ao gerente que pegou o iogurte, e o gerente 'empurra' o repositor.", correta: false },
-                { texto: "Um sistema 'Push' é idêntico a um sistema 'Pull'; os termos são usados de forma intercambiável no Lean.", correta: false },
-                { texto: "Um sistema 'Push' é quando o laticínio espera o supermercado ficar sem estoque para 'empurrar' a reposição.", correta: false }
+                { texto: "No 'Sistema Puxado', a linha de montagem 'puxa' (demanda) um motor da fábrica de motores apenas quando precisa de um, e a fábrica produz apenas para repor o que foi consumido.", correta: true },
+                { texto: "No 'Sistema Puxado', a gestão 'puxa' a alavanca de emergência (Andon) para parar a linha se a previsão de vendas estiver errada.", correta: false },
+                { texto: "No 'Sistema Puxado', a fábrica de motores 'puxa' mais matéria-prima para produzir 1.500 motores, antecipando uma demanda maior.", correta: false },
+                { texto: "Um 'Sistema Puxado' é o mesmo que 'Mura' (irregularidade), pois a demanda do cliente é irregular e puxa a produção de forma caótica.", correta: false },
+                { texto: "No 'Sistema Puxado', os operadores 'puxam' as ideias de melhoria (Kaizen) da gestão, em vez de o contrário.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
-            { id: 11.2, grupo: 11, texto: "Um sistema 'Puxado' (Pull System), onde nada é produzido até que o cliente (interno ou final) demande, é o princípio que operacionaliza qual conceito central do TPS?",
+            { id: 11.2, grupo: 11, texto: "Estudo de Caso: Em um restaurante, a cozinha opera em 'Sistema Puxado' (Pull). O chef não produz nada até que o garçom traga um pedido (a demanda real do cliente). Isso elimina a 'Superprodução' (Muda). Este sistema é a operacionalização de qual pilar ou conceito do TPS?",
               alternativas: [
-                { texto: "O conceito de Jidoka (Autonomação), pois a qualidade puxa o processo.", correta: false },
-                { texto: "O conceito de Poka-Yoke (À prova de erros), pois impede a produção errada.", correta: false },
-                { texto: "O conceito de Just-in-Time (JIT), eliminando a superprodução e o excesso de estoque.", correta: true },
-                { texto: "O conceito de 5S (Organização), pois a ordem no local de trabalho puxa a eficiência.", correta: false },
-                { texto: "O conceito de TPM (Manutenção), pois máquinas confiáveis puxam a produção.", correta: false }
-              ], nivel: 'medio', pontos: 5, bloom: 'Compreensão' },
+                { texto: "O conceito de Jidoka (Autonomação), pois o chef para se a comida queimar.", correta: false },
+                { texto: "O conceito de 5S (Organização), pois a cozinha precisa estar limpa para o sistema funcionar.", correta: false },
+                { texto: "O conceito de Just-in-Time (JIT), pois o prato é feito 'apenas no momento necessário' e na 'quantidade necessária' (um), puxado pela demanda.", correta: true },
+                { texto: "O conceito de TPM (Manutenção), pois os fogões precisam de manutenção para não quebrar.", correta: false },
+                { texto: "O conceito de Muri (Sobrecarga), pois o chef fica sobrecarregado quando muitos pedidos chegam.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
             
             // Grupo 12: Perfeição (Kaizen/PDCA) (Difícil - Estudo de Caso)
-            { id: 12.1, grupo: 12, texto: "Estudo de Caso: Uma equipe de melhoria identifica um problema (Plan), implementa uma pequena mudança (Do) e mede os resultados (Check). O resultado é positivo. Qual é a etapa 'Act' (Agir) crucial que transforma isso em 'Kaizen' (melhoria contínua)?",
+            { id: 12.1, grupo: 12, texto: "Estudo de Caso: Uma equipe de logística usa o Ciclo PDCA (Plan-Do-Check-Act), o método científico para melhoria, para reduzir erros de envio. Eles identificam o problema e planejam uma mudança no leitor de código de barras (Plan). Eles implementam a mudança em um turno (Do). Eles medem e veem que os erros caíram 50% (Check). Qual é a etapa 'Act' (Agir) crucial que transforma isso em 'Kaizen' (melhoria contínua) em vez de apenas um experimento?",
               alternativas: [
-                { texto: "A etapa 'Act' é celebrar o sucesso e procurar o próximo problema, deixando a mudança como um 'experimento'.", correta: false },
-                { texto: "A etapa 'Act' é padronizar a mudança bem-sucedida para que ela se torne o novo processo normal, e então reiniciar o ciclo.", correta: true },
-                { texto: "A etapa 'Act' é documentar a falha (se houver) e punir a equipe para que não cometam o mesmo erro novamente.", correta: false },
-                { texto: "A etapa 'Act' é o mesmo que a etapa 'Do'; significa apenas 'agir' e implementar o plano original em larga escala.", correta: false },
-                { texto: "A etapa 'Act' é desfazer a mudança após o 'Check' para provar que a melhoria era real, retornando ao estado anterior.", correta: false }
+                { texto: "A etapa 'Act' é celebrar o sucesso e dissolver a equipe, pois o problema foi resolvido e o experimento acabou.", correta: false },
+                { texto: "A etapa 'Act' é padronizar a nova mudança (o novo leitor ou processo) como o 'novo normal' para todos os turnos e, em seguida, procurar o próximo problema (reiniciar o PDCA).", correta: true },
+                { texto: "A etapa 'Act' é reverter a mudança, mesmo que tenha sido bem-sucedida, para provar que a melhoria não foi um acaso, e então refazer o 'Do'.", correta: false },
+                { texto: "A etapa 'Act' é o mesmo que a etapa 'Do'; significa apenas 'agir' e implementar o plano original com mais intensidade.", correta: false },
+                { texto: "A etapa 'Act' é documentar a falha (se houver) e punir a equipe para que não cometam o mesmo erro novamente.", correta: false }
               ], nivel: 'dificil', pontos: 8, bloom: 'Avaliação' },
-            { id: 12.2, grupo: 12, texto: "O Princípio 5, 'Perfeição', não é um destino final, mas um processo cultural de melhoria contínua (Kaizen). Qual é o método científico usado para implementar o Kaizen?",
+            { id: 12.2, grupo: 12, texto: "O Princípio 5, 'Perfeição', é a busca incessante pela melhoria contínua (Kaizen). O motor que implementa o Kaizen é o Ciclo PDCA (Plan-Do-Check-Act). Se uma equipe implementa uma mudança (Do) e os resultados (Check) são negativos (o problema piorou), o que o ciclo PDCA determina que deve ser feito na etapa 'Act'?",
               alternativas: [
-                { texto: "O método VSM (Mapeamento do Fluxo de Valor), que planeja, faz, verifica e age no fluxo.", correta: false },
-                { texto: "O método dos 5 Porquês, que busca a causa raiz dos problemas para a perfeição.", correta: false },
-                { texto: "O método do Ciclo PDCA (Plan-Do-Check-Act), que aplica o método científico à melhoria.", correta: true },
-                { texto: "O método Jidoka (Autonomação), que para a linha para buscar a perfeição na qualidade.", correta: false },
-                { texto: "O método Kanban, que sinaliza visualmente a necessidade de melhoria contínua.", correta: false }
-              ], nivel: 'medio', pontos: 5, bloom: 'Compreensão' }, // Mudei para médio
+                { texto: "Na etapa 'Act', a equipe deve padronizar a mudança negativa, pois o método científico deve ser seguido à risca.", correta: false },
+                { texto: "Na etapa 'Act', a equipe deve punir quem sugeriu a mudança (o 'Plan') e abandonar o ciclo PDCA.", correta: false },
+                { texto: "Na etapa 'Act', a equipe deve aprender com o experimento que falhou, reverter a mudança e iniciar um novo ciclo PDCA com um novo 'Plan' (uma nova hipótese).", correta: true },
+                { texto: "Na etapa 'Act', a equipe deve culpar os operadores por implementarem a mudança (o 'Do') incorretamente.", correta: false },
+                { texto: "Na etapa 'Act', a equipe deve ignorar o 'Check' negativo e implementar a mudança em larga escala de qualquer maneira.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Avaliação' },
 
             // Grupo 13: JIT vs Kanban (Médio - Análise)
-            { id: 13.1, grupo: 13, texto: "Um erro comum é confundir Just-in-Time (JIT) e Kanban. Qual é a relação correta entre os dois conceitos?",
+            { id: 13.1, grupo: 13, texto: "O Just-in-Time (JIT) é o pilar do TPS que dita 'produzir apenas o que é necessário, quando necessário'. O Kanban (cartão visual) é frequentemente confundido com ele. Qual é a relação precisa entre JIT e Kanban?",
               alternativas: [
-                { texto: "JIT e Kanban são a mesma coisa; Kanban é apenas o termo japonês para JIT.", correta: false },
-                { texto: "Kanban é a estratégia filosófica (estoque zero), enquanto JIT é a ferramenta (cartão visual) que a habilita.", correta: false },
-                { texto: "JIT é a estratégia ou filosofia (produção puxada, estoque zero), enquanto Kanban é o mecanismo (sinal visual) que permite ao JIT operar.", correta: true },
-                { texto: "JIT é o pilar da qualidade (Jidoka), enquanto Kanban é o pilar do fluxo de materiais.", correta: false },
-                { texto: "Kanban é usado para 'empurrar' (Push) a produção, enquanto o JIT é usado para 'puxar' (Pull).", correta: false }
+                { texto: "JIT e Kanban são exatamente a mesma coisa; Kanban é apenas a palavra japonesa para JIT.", correta: false },
+                { texto: "Kanban é a filosofia estratégica de 'estoque zero', enquanto o JIT é a ferramenta prática (o cartão) que a implementa.", correta: false },
+                { texto: "JIT é a estratégia ou filosofia (produção puxada, fluxo contínuo), enquanto o Kanban é o mecanismo (o sinal visual ou o contêiner vazio) que permite ao JIT operar na prática.", correta: true },
+                { texto: "JIT refere-se ao pilar da qualidade (Jidoka), enquanto o Kanban refere-se ao pilar do fluxo (produção puxada).", correta: false },
+                { texto: "Kanban é usado para 'empurrar' (Push) a produção com base em previsões, enquanto o JIT é usado para 'puxar' (Pull) com base na demanda real.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
-            { id: 13.2, grupo: 13, texto: "Estudo de Caso: Em uma linha de montagem, o operador da Estação B pega uma caixa de peças da Estação A. A caixa vazia é enviada de volta para a Estação A, sinalizando que ela deve produzir *apenas* uma nova caixa. Isso é um exemplo de:",
+            { id: 13.2, grupo: 13, texto: "Estudo de Caso: Em uma fábrica, a Estação 2 (Montagem) precisa de caixas de parafusos da Estação 1 (Almoxarifado). Quando a Estação 2 esvazia uma caixa, ela a envia de volta para a Estação 1. A caixa vazia (o 'Kanban') é o sinal visual que autoriza a Estação 1 a repor *apenas* aquela caixa. Este sistema habilita qual pilar do TPS?",
               alternativas: [
-                { texto: "Um sistema Puxado (Pull) habilitado por um Kanban (a caixa vazia) para operar o JIT.", correta: true },
-                { texto: "Um sistema Empurrado (Push), pois a Estação A está 'empurrando' caixas para a Estação B.", correta: false },
-                { texto: "Um sistema Jidoka, pois a caixa vazia detecta um defeito na produção da Estação A.", correta: false },
-                { texto: "Um sistema 5S, pois a caixa vazia está sendo usada para manter a área organizada.", correta: false },
-                { texto: "Um sistema Muri, pois a Estação A está sobrecarregada por ter que preencher a caixa.", correta: false }
+                { texto: "O pilar Jidoka (Autonomação), pois a caixa vazia detecta um defeito na qualidade dos parafusos.", correta: false },
+                { texto: "O pilar Just-in-Time (JIT), pois o Kanban (caixa vazia) garante que a produção seja 'puxada' (Pull) e que os parafusos cheguem 'exatamente quando necessários'.", correta: true },
+                { texto: "O pilar TPM (Manutenção Produtiva Total), pois a caixa vazia indica que a Estação 2 precisa de manutenção.", correta: false },
+                { texto: "O pilar 5S (Organização), pois a caixa vazia está sendo usada para manter a área limpa (Seiso).", correta: false },
+                { texto: "O pilar Muri (Sobrecarga), pois a Estação 1 agora está sobrecarregada por ter que encher a caixa.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
             
             // Grupo 14: Jidoka (Difícil - Estudo de Caso)
-            { id: 14.1, grupo: 14, texto: "Estudo de Caso: Uma máquina na linha de produção detecta uma peça desalinhada, para automaticamente e acende uma luz (Andon). Por que este princípio (Jidoka) é diferente da automação tradicional?",
+            { id: 14.1, grupo: 14, texto: "Estudo de Caso: Em uma linha de engarrafamento, uma nova máquina (Automação Tradicional) enche 1.000 garrafas por minuto. No entanto, um bico entope e ela começa a encher garrafas com metade do volume. A máquina continua operando, produzindo milhares de garrafas defeituosas. Como o pilar 'Jidoka' (automação com toque humano) do TPS difere disso?",
               alternativas: [
-                { texto: "Porque a automação tradicional focaria em quantidade, continuando a operar mesmo produzindo peças defeituosas.", correta: true },
-                { texto: "Porque a automação tradicional é 'burra' e não consegue detectar peças desalinhadas, apenas quebras totais.", correta: false },
-                { texto: "Porque Jidoka é um processo manual, onde o operador (não a máquina) decide parar a linha ao ver o defeito.", correta: false },
-                { texto: "Porque Jidoka é o mesmo que JIT, focando no fluxo de peças, não na qualidade ou na parada da linha.", correta: false },
-                { texto: "Porque a automação tradicional é mais barata e eficiente, enquanto Jidoka é caro e raramente usado.", correta: false }
+                { texto: "O Jidoka focaria em quantidade, operando a 2.000 garrafas por minuto, independentemente dos defeitos.", correta: false },
+                { texto: "O Jidoka é um processo puramente manual; ele proibiria a máquina de engarrafamento e usaria operadores.", correta: false },
+                { texto: "O Jidoka é o mesmo que JIT; ele garantiria que as garrafas chegassem 'just-in-time', mas não lidaria com o defeito.", correta: false },
+                { texto: "O Jidoka focaria em 'qualidade na fonte': a máquina seria dotada de inteligência (um sensor) para detectar a anormalidade (volume baixo) e parar imediatamente.", correta: true },
+                { texto: "O Jidoka é o mesmo que Kanban; ele usaria um cartão visual para sinalizar que o bico estava entupido.", correta: false }
               ], nivel: 'dificil', pontos: 8, bloom: 'Análise' },
-            { id: 14.2, grupo: 14, texto: "Estudo de Caso: Uma empresa adota o JIT (que reduz custos de estoque) mas ignora o Jidoka (que exige parar a linha). Por que o material afirma que isso resulta em 'sistemas frágeis'?",
+            { id: 14.2, grupo: 14, texto: "Estudo de Caso: Uma empresa implementa o JIT (Just-in-Time) e reduz seus estoques para quase zero, o que reduz custos. No entanto, eles ignoram o pilar 'gêmeo' do JIT, o Jidoka (qualidade na fonte). Por que o material afirma que um sistema JIT sem Jidoka é 'frágil'?",
               alternativas: [
-                { texto: "Porque sem o Jidoka, a empresa não consegue implementar o 5S, que é a base da estabilidade.", correta: false },
-                { texto: "Porque o JIT (com baixo estoque) propaga defeitos muito rapidamente, e sem o Jidoka (parada na fonte), o sistema produzirá 100% de sucata.", correta: true },
-                { texto: "Porque o Jidoka é o pilar que garante a manutenção (TPM), e sem ele as máquinas quebram.", correta: false },
-                { texto: "Porque o JIT é focado em 'empurrar' a produção, e o Jidoka é focado em 'puxar', causando um conflito.", correta: false },
-                { texto: "Porque o Jidoka é a única forma de obter 'Respeito pelas Pessoas', e sem ele os operadores não trabalham.", correta: false }
+                { texto: "Porque o Jidoka é o pilar que garante a manutenção (TPM) das máquinas, e sem ele o JIT não funciona.", correta: false },
+                { texto: "Porque o JIT (com baixo estoque) faz com que um defeito produzido na Estação A chegue à Estação B em minutos. Sem o Jidoka (que para a linha na fonte), o sistema inteiro produzirá 100% de sucata rapidamente.", correta: true },
+                { texto: "Porque o Jidoka é o pilar do 'Respeito pelas Pessoas', e sem ele os operadores não se sentem motivados a operar o JIT.", correta: false },
+                { texto: "Porque o JIT é um sistema 'Push' (Empurrado) e o Jidoka é um sistema 'Pull' (Puxado), e eles entram em conflito direto.", correta: false },
+                { texto: "Porque o Jidoka é a única forma de implementar o 5S (Organização), que é a fundação para o JIT.", correta: false }
               ], nivel: 'dificil', pontos: 8, bloom: 'Análise' },
 
             // Grupo 15: Poka-Yoke (Médio - Estudo de Caso)
-            { id: 15.1, grupo: 15, texto: "Estudo de Caso: Para evitar que os clientes coloquem diesel em um carro a gasolina, o bocal da bomba de diesel é projetado para ser maior que o tanque de gasolina. Este é um exemplo de qual ferramenta Lean?",
+            { id: 15.1, grupo: 15, texto: "Estudo de Caso: Em uma linha de montagem de motores, um operador frequentemente esquecia de instalar uma pequena vedação (um erro humano). A engenharia redesenhou a peça para que o motor não pudesse ser fechado se a vedação não estivesse no lugar (o pino-guia não encaixava). Este design, que torna o erro impossível, é um exemplo clássico de qual ferramenta Lean?",
               alternativas: [
-                { texto: "Jidoka (Autonomação), pois o carro para se o combustível errado for colocado.", correta: false },
-                { texto: "Kanban (Sinal Visual), pois o bocal maior sinaliza que é o combustível errado.", correta: false },
-                { texto: "Poka-Yoke (À prova de erros), pois o design torna o erro fisicamente impossível de ser cometido.", correta: true },
-                { texto: "5S (Organização), pois os bocais estão ordenados (Seiton) por tamanho no posto.", correta: false },
-                { texto: "Kaizen (Melhoria Contínua), pois é uma melhoria no design do carro.", correta: false }
+                { texto: "Poka-Yoke (À prova de erros), pois o design do processo impede fisicamente a ocorrência do erro humano.", correta: true },
+                { texto: "Jidoka (Autonomação), pois a linha para. (Nota: O Poka-Yoke habilita o Jidoka, mas a ferramenta em si é o Poka-Yoke).", correta: false },
+                { texto: "Kanban (Sinal Visual), pois o pino-guia sinaliza visualmente que a vedação está faltando.", correta: false },
+                { texto: "5S (Organização), pois a vedação agora tem um lugar certo (Seiton) e está mais organizada.", correta: false },
+                { texto: "5 Porquês, pois a equipe usou esta técnica para descobrir por que o operador esquecia a vedação.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
-            { id: 15.2, grupo: 15, texto: "O objetivo do Poka-Yoke é atingir 'Zero Defeitos' tornando o erro humano impossível. Qual dos exemplos abaixo NÃO é um Poka-Yoke?",
+            { id: 15.2, grupo: 15, texto: "O Poka-Yoke (à prova de erros) é um mecanismo de engenharia desenvolvido por Shigeo Shingo para atingir 'Zero Defeitos'. Qual dos exemplos abaixo NÃO é um Poka-Yoke?",
               alternativas: [
-                { texto: "Um conector USB ou HDMI, que só pode ser inserido da maneira correta.", correta: false },
-                { texto: "Um verificador ortográfico que *alerta* sobre erros, mas *permite* que você os ignore.", correta: false }, // Distrator - é um Poka-Yoke de detecção
-                { texto: "Um cartão Kanban que sinaliza a necessidade de mais peças para a linha de produção.", correta: true },
-                { texto: "Pinos-guia em uma montagem que impedem fisicamente que a peça seja montada ao contrário.", correta: false },
-                { texto: "Armários que só permitem abrir uma gaveta por vez para evitar tombamento.", correta: false }
-              ], nivel: 'medio', pontos: 5, bloom: 'Análise' }, // A resposta (C) é claramente não um Poka-Yoke.
+                { texto: "Um conector USB ou HDMI, que possui um formato específico que impede a inserção incorreta.", correta: false },
+                { texto: "Um verificador ortográfico que *alerta* sobre um erro, mas permite que o usuário o ignore (Poka-Yoke de detecção/aviso).", correta: false },
+                { texto: "Uma lista de verificação (checklist) que o operador deve assinar, confiando em sua memória e disciplina para evitar o erro.", correta: true },
+                { texto: "Pinos-guia em uma montagem que impedem fisicamente que uma peça seja montada ao contrário.", correta: false },
+                { texto: "A gaveta de um caixa eletrônico que só libera o dinheiro após o cliente retirar o cartão (evitando o esquecimento).", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Análise' }, // Mudei para difícil, pois a C é a única que confia na disciplina, não no design.
 
             // Grupo 16: 5 Porquês (Médio - Estudo de Caso)
-            { id: 16.1, grupo: 16, texto: "Estudo de Caso: Uma máquina para (Problema). O operador troca o fusível (Solução 1). No dia seguinte, ela para de novo. Um supervisor aplica os 5 Porquês e descobre que a causa raiz era 'falta de lubrificação'. O que a primeira solução falhou em fazer?",
+            { id: 16.1, grupo: 16, texto: "Estudo de Caso: Uma impressora de escritório para de funcionar (Problema). Um funcionário desliga e liga, e ela volta a funcionar (Solução 1). Duas horas depois, ela para novamente. O técnico de TI aplica os '5 Porquês' (uma técnica de Análise de Causa Raiz, ou RCA) e descobre que a causa raiz é um 'driver de software desatualizado no servidor'. O que a primeira solução (desligar e ligar) falhou em fazer?",
               alternativas: [
-                { texto: "Falhou em resolver o sintoma (o fusível queimado) e atacou apenas a causa raiz.", correta: false },
-                { texto: "Falhou em aplicar o Poka-Yoke, que teria impedido a queima do fusível.", correta: false },
-                { texto: "Falhou em atacar a causa raiz (falta de lubrificação) e resolveu apenas o sintoma (fusível queimado).", correta: true },
-                { texto: "Falhou em implementar o JIT, que teria fornecido um novo fusível no momento exato.", correta: false },
-                { texto: "Falhou em usar o VSM para mapear o processo de troca de fusíveis na fábrica.", correta: false }
+                { texto: "Falhou em resolver o sintoma (a impressora travada) e focou apenas na causa raiz (o driver).", correta: false },
+                { texto: "Falhou em aplicar o Poka-Yoke, que teria impedido o driver de ficar desatualizado.", correta: false },
+                { texto: "Falhou em atacar a causa raiz (o driver) e resolveu apenas o sintoma superficial e temporário (a impressora travada).", correta: true },
+                { texto: "Falhou em implementar o JIT, que teria fornecido um novo driver no momento exato em que ele ficou desatualizado.", correta: false },
+                { texto: "Falhou em usar o VSM para mapear o processo de impressão no escritório.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
-            { id: 16.2, grupo: 16, texto: "Estudo de Caso (continuação): A análise dos 5 Porquês da máquina que parou revelou que a bomba de lubrificação falhou porque 'cavacos (aparas) entraram nela'. A equipe então instala uma 'proteção' para impedir a entrada de cavacos. Essa solução (a proteção) é um exemplo de:",
+            { id: 16.2, grupo: 16, texto: "Estudo de Caso: No exemplo clássico de Taiichi Ohno, uma máquina para. 1º Porquê: O fusível queimou. 2º Porquê: Sobrecarga. 3º Porquê: Falta de lubrificação. 4º Porquê: Bomba de lubrificação falhou. 5º Porquê: Cavacos (aparas) de metal entraram na bomba. Se a equipe tivesse parado no 1º Porquê (trocar o fusível), o que teria acontecido?",
               alternativas: [
-                { texto: "Um Poka-Yoke (à prova de erros), pois impede fisicamente a ocorrência do problema.", correta: true },
-                { texto: "Um Kanban, pois a proteção sinaliza visualmente quando os cavacos estão se acumulando.", correta: false },
-                { texto: "Um sistema Puxado (Pull system), pois a proteção puxa a lubrificação.", correta: false },
-                { texto: "Um VSM do Estado Futuro, pois o mapa do processo agora inclui a proteção.", correta: false },
-                { texto: "Um Muda Tipo 1, pois a proteção é uma atividade necessária que não agrega valor.", correta: false }
-              ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' },
+                { texto: "O problema teria sido resolvido permanentemente, pois a troca do fusível (a causa raiz) corrigiu o sistema.", correta: false },
+                { texto: "O problema (parada da máquina) teria ocorrido novamente, pois trocar o fusível foi apenas uma solução para o sintoma, não para a causa raiz (cavacos).", correta: true },
+                { texto: "A equipe teria aplicado um Poka-Yoke (à prova de erros) ao trocar o fusível, impedindo futuras falhas.", correta: false },
+                { texto: "A equipe teria implementado o Jidoka (autonomação) ao identificar que o fusível era a causa raiz.", correta: false },
+                
+                { texto: "A equipe teria gasto muito tempo desnecessariamente, pois a troca do fusível era a única ação necessária.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
 
             // Grupo 17: 5S (Fácil - Conhecimento)
-            { id: 17.1, grupo: 17, texto: "Qual 'S' do 5S é descrito como 'Separar o que é necessário do que é desnecessário no local de trabalho e descartar o último'?",
+            { id: 17.1, grupo: 17, texto: "O 5S é a fundação para a estabilidade, focado na organização e disciplina. Qual 'S' é descrito como 'Um lugar para cada coisa, e cada coisa em seu lugar', focando em organizar os itens necessários para que sejam fáceis de encontrar, usar e guardar?",
               alternativas: [
-                { texto: "Seiri (Senso de Utilização)", correta: true },
-                { texto: "Seiton (Senso de Ordenação)", correta: false },
-                { texto: "Seiso (Senso de Limpeza)", correta: false },
-                { texto: "Seiketsu (Senso de Padronização)", correta: false },
-                { texto: "Shitsuke (Senso de Disciplina)", correta: false }
-              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
-            { id: 17.2, grupo: 17, texto: "Qual 'S' do 5S é descrito como 'Um lugar para cada coisa, e cada coisa em seu lugar', focando na organização e facilidade de acesso?",
-              alternativas: [
-                { texto: "Seiri (Senso de Utilização)", correta: false },
+                { texto: "Seiri (Senso de Utilização / Classificar)", correta: false },
                 { texto: "Seiton (Senso de Ordenação)", correta: true },
                 { texto: "Seiso (Senso de Limpeza)", correta: false },
                 { texto: "Seiketsu (Senso de Padronização)", correta: false },
                 { texto: "Shitsuke (Senso de Disciplina)", correta: false }
               ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
+            { id: 17.2, grupo: 17, texto: "O 5S é uma metodologia de gestão para criar um local de trabalho estável. O primeiro passo, 'Seiri' (Classificar), envolve separar o necessário do desnecessário. O segundo, 'Seiton' (Ordenar), é 'um lugar para cada coisa'. O que é 'Seiso' (Limpar)?",
+              alternativas: [
+                { texto: "Criar os padrões e regras visuais para manter os três primeiros 'S' de forma consistente.", correta: false },
+                { texto: "Manter os padrões e transformar a prática do 5S em um hábito e parte da cultura.", correta: false },
+                { texto: "Limpar o local de trabalho, o que no Lean também é uma forma de inspeção (ex: um chão limpo revela vazamentos).", correta: true },
+                { texto: "Descartar os itens desnecessários que foram identificados na etapa de classificação (Seiri).", correta: false },
+                { texto: "Organizar os itens necessários para que sejam fáceis de encontrar (esta é a definição de Seiton).", correta: false }
+              ], nivel: 'facil', pontos: 3, bloom: 'Conhecimento' },
 
             // Grupo 18: TPM e JIT (Difícil - Síntese)
-            { id: 18.1, grupo: 18, texto: "Por que a Manutenção Produtiva Total (TPM) é considerada uma 'fundação de estabilidade' e uma habilitadora essencial para o Just-in-Time (JIT)?",
+            { id: 18.1, grupo: 18, texto: "Estudo de Caso: Uma fábrica implementa o JIT (Just-in-Time) e reduz seus estoques de dias para horas. Eles operam com um fluxo 'puxado' e enxuto. No entanto, eles não implementam a Manutenção Produtiva Total (TPM), uma estratégia que foca em 'Zero Falhas Não Planejadas'. Por que o TPM é um habilitador crítico para um sistema JIT?",
               alternativas: [
-                { texto: "Porque o TPM foca em organizar (5S), o que torna o JIT mais rápido.", correta: false },
-                { texto: "Porque o JIT opera sem estoques de segurança; se uma máquina-chave quebra (falha de TPM), o fluxo inteiro para (Espera).", correta: true },
-                { texto: "Porque o TPM é o mesmo que Jidoka, e ambos param a linha quando há um defeito.", correta: false },
-                { texto: "Porque o TPM e o JIT são opostos; uma empresa deve escolher um ou outro.", correta: false },
-                { texto: "Porque o TPM foca em 'Zero Acidentes', o que não tem relação com o JIT.", correta: false }
+                { texto: "Porque o JIT opera sem estoques de segurança. Em um sistema tradicional (Push), se uma máquina quebra, a linha continua com o estoque. Em um sistema JIT, uma quebra de máquina (falha de TPM) para o fluxo inteiro, gerando 'Espera'.", correta: true },
+                { texto: "Porque o TPM é o mesmo que Jidoka (qualidade na fonte), e o JIT não pode funcionar sem o Jidoka.", correta: false },
+                { texto: "Porque o TPM foca em 'Zero Acidentes', e um sistema JIT é inerentemente mais perigoso para os operadores.", correta: false },
+                { texto: "Porque o TPM é o mesmo que 5S (Organização), e a limpeza é necessária para que o Kanban (JIT) funcione.", correta: false },
+                { texto: "Porque o JIT (produção puxada) e o TPM (manutenção) são conceitos opostos; uma empresa deve escolher apenas um.", correta: false }
               ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' },
-            { id: 18.2, grupo: 18, texto: "Estudo de Caso: Uma fábrica implementa um sistema JIT (Pull) perfeito, reduzindo o estoque a quase zero. No entanto, eles não implementam o TPM. O que acontece quando a máquina principal da linha quebra inesperadamente?",
+            { id: 18.2, grupo: 18, texto: "Estudo de Caso: Uma gráfica adota o 'Fluxo Contínuo' (Princípio 3) e o JIT (Princípio 4). O estoque intermediário (WIP) entre a Impressora A e a Cortadora B é zero. A Cortadora B quebra inesperadamente (uma falha de TPM - Manutenção Produtiva Total). O que acontece imediatamente com a Impressora A e o sistema como um todo?",
               alternativas: [
-                { texto: "Nada, o sistema JIT continua funcionando usando os estoques de segurança que ele mantém.", correta: false },
-                { texto: "O sistema inteiro para imediatamente, gerando um desperdício massivo de Espera para todas as etapas seguintes.", correta: true },
-                { texto: "A qualidade (Jidoka) melhora, pois a máquina quebrada não pode produzir defeitos.", correta: false },
-                { texto: "O sistema automaticamente se converte em um sistema 'Push' (Empurrado) para compensar a falha.", correta: false },
-                { texto: "Apenas a máquina quebrada para; as outras continuam operando normalmente por dias.", correta: false }
-              ], nivel: 'dificil', pontos: 8, bloom: 'Aplicação' },
+                { texto: "Nada. A Impressora A continua operando em 'Superprodução' (Push), criando um grande 'Estoque' (Muda) na frente da Cortadora B quebrada.", correta: false },
+                { texto: "O sistema JIT/Fluxo Contínuo (sem estoque) faz com que a Impressora A pare quase imediatamente, pois não há onde colocar sua produção, gerando 'Espera' (Muda) em todo o sistema.", correta: true },
+                { texto: "A quebra da Cortadora B (falha de TPM) é um exemplo de Jidoka (qualidade), pois impede que impressões ruins sejam cortadas.", correta: false },
+                { texto: "O sistema automaticamente aciona um 'Kanban' de emergência para que a Impressora A produza o dobro e compense a falha.", correta: false },
+                { texto: "Apenas a Cortadora B para. A Impressora A continua funcionando e enviando seu material para um estoque de segurança.", correta: false }
+              ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' },
             
             // Grupo 19: Lean Office (Médio - Estudo de Caso)
-            { id: 19.1, grupo: 19, texto: "Estudo de Caso: Em um escritório, um pedido de compra exige 8 assinaturas (Processamento Excessivo) e fica dias na caixa de entrada de e-mail de um gerente (Espera/Inventário). Como o 'Lean Office' enxerga esse processo?",
+            { id: 19.1, grupo: 19, texto: "Estudo de Caso: A aplicação do Lean em escritórios (Lean Office) foca no 'fluxo de informação'. Em um processo de aprovação de despesas, um relatório digital precisa passar por 7 gerentes (Processamento Excessivo), ficando em média 2 dias na caixa de entrada de e-mail de cada um (Espera / Inventário). Embora o trabalho real de aprovação leve 5 minutos por gerente, o processo total leva 14 dias. Como o Lean Office enxerga isso?",
               alternativas: [
-                { texto: "Como um processo robusto e seguro, pois as 8 assinaturas garantem o controle da qualidade.", correta: false },
-                { texto: "Como um processo cheio de desperdícios (Muda), onde o fluxo de informação (o 'produto') é invisível e está bloqueado.", correta: true },
-                { texto: "Como um exemplo de Jidoka, pois cada gerente que assina está inspecionando o pedido na fonte.", correta: false },
-                { texto: "Como um problema de Muri (Sobrecarga), pois o gerente com 800 e-mails está sobrecarregado.", correta: false }, // Distrator, mas (B) é melhor
-                { texto: "Como um problema de 5S, pois a caixa de entrada do gerente está desorganizada (falta Seiton).", correta: false }
+                { texto: "Como um processo robusto e seguro, pois as 7 aprovações garantem o controle financeiro (Muda Tipo 1).", correta: false },
+                { texto: "Como um processo invisível, mas cheio de desperdícios (Muda Tipo 2), onde o 'produto' (o relatório) fica 99% do tempo parado em 'Inventário' (caixa de entrada).", correta: true },
+                { texto: "Como um problema de 'Movimento' (Muda), pois os gerentes precisam mover o mouse para clicar em 'aprovar'.", correta: false },
+                { texto: "Como um problema de 'Muri' (Sobrecarga), pois os 7 gerentes estão claramente sobrecarregados e não conseguem ler e-mails.", correta: false },
+                { texto: "Como um problema de TPM (Manutenção), pois o servidor de e-mail provavelmente está lento e precisa de manutenção.", correta: false }
               ], nivel: 'medio', pontos: 5, bloom: 'Aplicação' },
-            { id: 19.2, grupo: 19, texto: "Qual é o principal desafio da aplicação do Lean em ambientes administrativos (Lean Office) em comparação com a fábrica?",
+            { id: 19.2, grupo: 19, texto: "Estudo de Caso: Em um hospital (Lean Healthcare), a jornada do paciente para um exame de raio-X envolve: 1. Check-in (5 min). 2. Espera na Sala A (30 min). 3. Triagem (10 min). 4. Espera na Sala B (40 min). 5. Raio-X (5 min). 6. Espera na Sala C (15 min). 7. Consulta com médico (10 min). O Lead Time total é de 115 minutos, mas o Tempo de Agregação de Valor (VA) é de 30 minutos. Qual é o principal desafio que o Lean busca resolver aqui?",
               alternativas: [
-                { texto: "No escritório não existem desperdícios (Muda), tornando o Lean inútil.", correta: false },
-                { texto: "O 'fluxo de trabalho' (informação) é muitas vezes invisível, preso em e-mails e sistemas, dificultando a 'enxergar' o desperdício.", correta: true },
-                { texto: "Os funcionários de escritório são mais resistentes a mudanças do que os operadores de fábrica.", correta: false },
-                { texto: "O JIT e o Kanban não podem ser aplicados de forma alguma em um fluxo de informação.", correta: false },
-                { texto: "O principal desperdício no escritório é o 'Movimento', enquanto na fábrica é o 'Estoque'.", correta: false }
-              ], nivel: 'medio', pontos: 5, bloom: 'Compreensão' },
+                { texto: "O 'Movimento' (Muda) do paciente entre as salas A, B e C, que é o maior desperdício de tempo.", correta: false },
+                { texto: "O 'Processamento Excessivo' (Muda) da máquina de Raio-X, que provavelmente é muito cara.", correta: false },
+                { texto: "Os 85 minutos de 'Espera' (Muda), que representam o fluxo de trabalho invisível e bloqueado do paciente.", correta: true },
+                { texto: "O 'Defeito' (Muda) na qualidade do Raio-X, que pode exigir retrabalho (repetir o exame).", correta: false },
+                { texto: "O 'Talento Não Utilizado' (Muda) do médico, que só gasta 10 minutos com o paciente.", correta: false }
+              ], nivel: 'medio', pontos: 5, bloom: 'Análise' },
 
             // Grupo 20: Lean Startup (Difícil - Síntese)
-            { id: 20.1, grupo: 20, texto: "Estudo de Caso: Uma startup gasta 2 anos e $1 milhão construindo um produto complexo (Superprodução/Processamento Excessivo). Ao lançar, descobre que ninguém quer usá-lo. Como a metodologia 'Lean Startup' evitaria esse desperdício?",
+            { id: 20.1, grupo: 20, texto: "Estudo de Caso: Uma startup de tecnologia gasta dois anos desenvolvendo um aplicativo complexo com 100 recursos, operando em 'modo secreto' (sem feedback). Ao lançar, descobre que o mercado não quer o produto (o maior desperdício de todos). A 'Lean Startup' evita isso usando o ciclo 'Construir-Medir-Aprender'. O que a startup deveria ter 'Construído' primeiro?",
               alternativas: [
-                { texto: "Focando no 5S do escritório para que os programadores sejam mais organizados e rápidos.", correta: false },
-                { texto: "Usando o ciclo Construir-Medir-Aprender: construir um Produto Mínimo Viável (MVP) rápido, medir a reação de clientes reais e aprender (Perseverar ou Pivotar).", correta: true },
-                { texto: "Aplicando o Jidoka, para que o programador pare a linha de código sempre que detectar um bug.", correta: false },
-                { texto: "Usando os 5 Porquês para descobrir por que os clientes não querem o produto, mas somente *após* o lançamento.", correta: false },
-                { texto: "Implementando um sistema Kanban para gerenciar as tarefas dos programadores de forma mais visual.", correta: false }
+                { texto: "Um plano de negócios (VSM) muito mais detalhado, com previsões financeiras (Push) para 10 anos.", correta: false },
+                { texto: "Um Produto Mínimo Viável (MVP), a versão mais simples do produto (com talvez 1 ou 2 recursos) usada para testar a hipótese fundamental do negócio com clientes reais (early adopters).", correta: true },
+                { texto: "Um Poka-Yoke (à prova de erros) para garantir que os programadores não criassem bugs no código dos 100 recursos.", correta: false },
+                { texto: "Um sistema Jidoka (autonomação) para parar o desenvolvimento se os programadores ficassem sobrecarregados (Muri).", correta: false },
+                { texto: "Um escritório perfeitamente organizado (5S), pois a desorganização foi a causa da falha do produto.", correta: false }
               ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' },
-            { id: 20.2, grupo: 20, texto: "A metodologia 'Lean Startup' (Construir-Medir-Aprender) é uma aplicação direta de qual outro conceito fundamental do Lean/TPS?",
+            { id: 20.2, grupo: 20, texto: "O ciclo 'Construir-Medir-Aprender' da metodologia Lean Startup é a aplicação direta de qual outro conceito fundamental do Lean/TPS, usado para aplicar o método científico à melhoria?",
               alternativas: [
-                { texto: "Do Jidoka (Autonomação), pois o MVP para o processo de desenvolvimento se estiver errado.", correta: false },
-                { texto: "Do Poka-Yoke (À prova de erros), pois o MVP impede que a startup cometa erros de mercado.", correta: false },
-                { texto: "Do Ciclo PDCA (Plan-Do-Check-Act), pois 'Construir' (Do), 'Medir' (Check) e 'Aprender' (Act/Plan) é o método científico aplicado à inovação.", correta: true },
-                { texto: "Do 5S (Organização), pois uma startup organizada aprende mais rápido com seus clientes.", correta: false },
-                { texto: "Do TPM (Manutenção), pois os servidores da startup precisam de manutenção para rodar o MVP.", correta: false }
+                { texto: "Do Jidoka (Autonomação), pois 'Medir' (Check) para o processo se a hipótese estiver errada.", correta: false },
+                { texto: "Do Ciclo PDCA (Plan-Do-Check-Act). 'Construir' é (Do), 'Medir' é (Check), e 'Aprender' (Perseverar/Pivotar) é (Act) e o novo (Plan).", correta: true },
+                { texto: "Do 5S (Organização), pois 'Construir' (Seiri), 'Medir' (Seiton) e 'Aprender' (Seiso) organizam a startup.", correta: false },
+                { texto: "Do Kanban (Sinal Visual), pois o feedback do cliente ('Aprender') é um sinal visual para 'Construir' mais.", correta: false },
+                { texto: "Do VSM (Mapeamento do Fluxo de Valor), pois o ciclo mapeia o fluxo de valor do aprendizado validado.", correta: false }
               ], nivel: 'dificil', pontos: 8, bloom: 'Síntese' }
         ];
 
